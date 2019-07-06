@@ -14,8 +14,16 @@ class CreateUserSocialMediaTable extends Migration
     public function up()
     {
         Schema::create('user_social_media', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+
+            $table->unsignedInteger('user_id');
+
+            $table->unsignedInteger('social_media_id');
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('social_media_id')->references('id')->on('social_medias')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

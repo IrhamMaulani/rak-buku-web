@@ -15,7 +15,12 @@ class CreateAuthorImagesTable extends Migration
     {
         Schema::create('author_images', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name')->unique();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

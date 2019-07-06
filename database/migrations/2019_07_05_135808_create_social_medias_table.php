@@ -14,7 +14,9 @@ class CreateSocialMediasTable extends Migration
     public function up()
     {
         Schema::create('social_medias', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->string('name')->unique();
+            $table->string('image_path')->unique();
             $table->timestamps();
         });
     }

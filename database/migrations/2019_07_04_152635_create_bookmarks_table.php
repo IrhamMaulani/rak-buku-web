@@ -15,9 +15,30 @@ class CreateBookmarksTable extends Migration
     {
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('status')->nullable();
+            $table->tinyInteger('is_owned');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('book_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('book_id')->references('id')->on('books')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
+
+    /**
+     * status = 
+     * default = 0
+     * completed
+     * on-hold
+     * plan-to-read
+     * dropped
+     * re-reading
+     * 
+     */
 
     /**
      * Reverse the migrations.

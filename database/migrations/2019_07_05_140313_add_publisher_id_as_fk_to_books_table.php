@@ -15,7 +15,6 @@ class AddPublisherIdAsFkToBooksTable extends Migration
     {
         Schema::table('books', function (Blueprint $table) {
             $table->unsignedInteger('publisher_id');
-            $table->timestamps();
             $table->foreign('publisher_id')->references('id')->on('publishers');
         });
     }
