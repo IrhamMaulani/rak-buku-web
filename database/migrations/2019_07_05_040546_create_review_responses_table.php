@@ -40,6 +40,6 @@ class CreateReviewResponsesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('helpful_reviews');
+        Schema::dropIfExists('review_responses');
     }
 }
