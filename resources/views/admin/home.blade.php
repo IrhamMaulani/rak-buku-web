@@ -10,13 +10,13 @@
 	<!-- Breadcomb area Start-->
     @breadcomb([
     'breadcomb' => ['title' => 'All User Data','content' => 'Add Data'],
-    'button' => ['title' => 'Add User','datatarget' => 'myModalone','icon'  => 'plus-symbol']])
+    'button' => ['title' => 'Add User','datatarget' => 'myModalone','icon'  => 'plus-symbol', 'id' => 'btn-add']])
     @endbreadcomb
 	<!-- Breadcomb area End-->
     <!-- Data Table area Start-->
   
     @datatable(['id' => 'user-table', 'style' => 'table-striped', 
-    'datas' => ['Name', 'Email', 'Author', 'Reputation', 'Roles', 'Edit', 'Delete'] ])
+    'datas' => ['id', 'Name', 'Email', 'Author', 'Reputation', 'Roles', 'Edit', 'Delete'] ])
 
     @enddatatable
 
@@ -32,7 +32,7 @@
                                         <i class="right-space-10px" ></i>
                                     </div>
                                     <div class="nk-int-st">
-                                        <input type="text" name="name" id="name" class="form-control input-left-space" placeholder="Full Name">
+                                        <input type="text" name="name" id="name" class="form-control input-left-space" placeholder="Full Name" required>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                         <i class="right-space-10px"></i>
                                     </div>
                                     <div class="nk-int-st">
-                                        <input type="email" name="email" class="form-control email-no-border" placeholder="Email" >
+                                        <input type="email" name="email" id='email' class="form-control email-no-border" placeholder="Email" required >
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                        {{-- <i class="right-space-10px"></i> --}}
                                     </div>
                                     <div class="nk-int-st">
-                                        <input type="password" name="password" class="form-control input-left-space" placeholder="Password">
+                                        <input type="password" name="password" id="password" class="form-control input-left-space" placeholder="Password" required>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                        {{-- <i class="right-space-10px"></i> --}}
                                     </div>
                                     <div class="nk-int-st">
-                                        <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
+                                        <input type="password" class="form-control" id="confirm_password" name="password_confirmation" placeholder="Confirm Password" required>
                                     </div>
                                 </div>
                             </div>
@@ -80,12 +80,14 @@
                                   
                                    <div class="bootstrap-select" >
                                     <select class="selectpicker" id='role-select'
-                                     title='Assign Role' multiple data-max-options="3" name="roles[]" style="padding-left:-10px;">
+                                     title='Assign Role' multiple data-max-options="3" name="roles[]" style="padding-left:-10px;" required>
                                     </select>
                                 </div>
                                 </div>
                             </div>
                         </div>
+
+                        <input type="hidden" id="send-type" name="send-type" value="post">
 
 
               
@@ -106,12 +108,7 @@
     @endslot
         
     @endmodal
-
-       </form>
-
-
-    <button id="btn-click">click</button>
-
+      
     
 @endsection
 
@@ -136,16 +133,33 @@
         }
     });
 
+    let userId;
+    let typeSend = document.querySelector('#send-type').value; 
+
+    const select = document.getElementById('role-select');
+
+    const csrfToken =  $('meta[name="csrf-token"]').attr('content');
+
+    const form = document.getElementById('form-create');
+
+    const btnAdd = document.querySelector('#btn-add');
+
 
         $(document).ready(function () {
         
         var table = $('#user-table').DataTable({
-            order:[[0,"desc"]],
-            "columnDefs": [
+        "columnDefs": [
+        {'targets' : 0, 'visible' : false},
         {"className": "dt-center", "targets": "_all"}
+       
       ],
+            order:[[0,"desc"]],
+      
             "ajax": "{{route('user.index')}}",
             "columns": [
+                {
+                    data : 'id'
+                },
                 {
                     data: 'name'
                 },
@@ -162,59 +176,176 @@
                     data: 'roles[,].name'
                 },
                 {
-                    "defaultContent": "<button class='btn btn-info get-data'>Edit Data!</button>"
+                    "defaultContent": "<button class='btn btn-info edit-data'>Edit Data!</button>"
                 },
                 {
-                    "defaultContent": "<button class='btn btn-danger delete-data'>Delete Data!</button>"
+                    "defaultContent": "<button class='btn btn-danger delete-data' data-send='put'>Delete Data!</button>"
                 }
             ],
         });
+
+        $('#user-table').css('visibility', 'visible');
+
+        $('#user-table tbody').on( 'click', '.edit-data', function () {
+                var data = table.row( $(this).parents('tr') ).data();
+
+                typeSend = "put";
+
+                $('#myModalone').modal('show');
+                 form.reset();
+
+                form.elements['name'].value = data.name;
+                form.elements['email'].value = data.email;
+                let values = data.roles;
+
+                // console.log(values[0].name);
+
+                let selectValues = [];
+
+               Object.keys(values).forEach(function (key) {
+                    selectValues.push(values[key].id);
+                    });
+
+            $('#role-select').selectpicker('val', selectValues);
+
+            //  form.elements['password'].style.visibility = "hidden";
+
+             hideComponents([form.elements['password'], form.elements['password_confirmation']]);
+
+                userId = data.id;
+            } );
+
+        $('#user-table tbody').on( 'click', '.delete-data', function () {
+                var data = table.row( $(this).parents('tr') ).data();
+
+                let urlDelete = '{{route('user.store')}}' + '/'+ data.id;
+
+                 if (confirm("Data will deleted. Are You Sure?")) {
+                     deleteData(urlDelete);
+                 }
+
+             
+            } );
+
         });
 
-
-        
-
-        // const select = document.getElementById('role-select');
-
-   
-            const url = '{{route('role.index')}}';
-            let select = document.getElementById('role-select');
-
-            const button = document.getElementById('btn-click');
-
-            
-
-            button.addEventListener("click", function(){
-
-            const selected = document.querySelectorAll('#role-select option:checked');
-
+        function hideComponents(params){
+            params.forEach(element => {
+                element.style.visibility = "hidden";
+                element.required = false;
             });
 
-            const csrfToken =  $('meta[name="csrf-token"]').attr('content');
+        }
 
-            console.log(csrfToken);
+          function showComponents(params){
+            params.forEach(element => {
+                element.style.visibility = "visible";
+            });
 
-            // let form = document.getElementById('btn-form');
+        }
 
-            let form = document.getElementById('form-create');
-            
+            btnAdd.addEventListener('click', function() {
+               typeSend = 'post'; 
+               form.reset();
+                showComponents([form.elements['password'], form.elements['password_confirmation']]);
+                $('#role-select').selectpicker('refresh');
+            });
+           
 
             form.addEventListener("submit", function(event){
 
-                event.preventDefault();
+                event.preventDefault();                
+
 
                 const urlPost = '{{route('user.store')}}';
 
+                const urlPut =  urlPost + '/' + userId;
+
                 let formData = new FormData(this);
+
+                if(typeSend == 'post'){
+                    postData(urlPost, formData);
+                }else{
+                    putData(urlPut, formData);
+                }
+
+             
+            });
+
+              function putData(urlPut, formData){
+
+                  formData.append('_method', 'PUT');
+                  formData.delete('password');
+
+                axios.post(urlPut, formData)
+                .then(function (response) {
+                    refreshDataTable();
+                    alert('succ');
+                })
+                .catch(function (error) {
+
+                    const errors = error.response.data.errors;
+
+                    for (const key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            const element = errors[key];
+
+                            alert(element);
+                            
+                        }
+                    }
+                    
+                });
+            }
+
+            function deleteData(urlDelete){
+
+                axios.delete(urlDelete)
+                .then(function (response) {
+                    refreshDataTable();
+                    alert('succ');
+                })
+                .catch(function (error) {
+
+                    const errors = error.response.data.errors;
+
+                    for (const key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            const element = errors[key];
+
+                            alert(element);
+                            
+                        }
+                    }
+                    
+                });
+            }
+
+             function postData(urlPost, formData){
 
                 axios.post(urlPost, formData)
                 .then(function (response) {
-                    alert('succ')
+                    refreshDataTable();
+                    alert('succ');
                 })
                 .catch(function (error) {
-                    console.log(error.response.data.message);
+
+                    const errors = error.response.data.errors;
+
+                    for (const key in errors) {
+                        if (errors.hasOwnProperty(key)) {
+                            const element = errors[key];
+
+                            alert(element);
+                            
+                        }
+                    }
+                    
                 });
-            });
+
+            }
+
+        const url = '{{route('role.index')}}';
       
         fetchData(url);
 
@@ -223,30 +354,34 @@
    
 
     axios.get(url)
-  .then(function (response) {
-    let results = response.data.data;
+        .then(function (response) {
+        let results = response.data.data;
 
     return results.map(function(result) {
-      let option = createNode('option'),
-          span = createNode('span');
-     
-      span.innerHTML = `${result.name}`;
-      option.value = `${result.id}`;
-      append(option, span);
-      append(select, option);
+        let option = createNode('option'),
+            span = createNode('span');
+        
+        span.innerHTML = `${result.name}`;
+        option.value = `${result.id}`;
+        append(option, span);
+        append(select, option);
 
-      $('#role-select').selectpicker('refresh');
-    })
+        $('#role-select').selectpicker('refresh');
+        })
     
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+    });
 
+        }
+
+         function refreshDataTable(){
+             $('#user-table').DataTable().ajax.reload();  
         }
 
     </script>

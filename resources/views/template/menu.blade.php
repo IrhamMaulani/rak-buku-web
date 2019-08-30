@@ -48,7 +48,19 @@
                         </li>
       
                         @else
-                    <li class="{{ request()->is($item['url'] == '' ? '/' : $item['url']) ? 'active' : '' }}">
+
+                        {{-- @dd(basename(request()->path())) --}}
+
+                        @if (basename(request()->path()) == $item['url'])
+                            {{-- @dd(Request::url()) --}}
+                        @else
+                            
+                        @endif
+
+                        {{-- @dd(basename(request()->path())) --}}
+                        
+                     
+                        <li class="{{ basename(request()->path()) == '' ? '/' : basename(request()->path()) == $item['url'] ? 'active' : '' }}">
                         <a class="active-single" href="{{ $item['url'] == '' ? url('/') : $item['url'] }}">
                         <i class="notika-icon {{$item['icon']}}"> </i>{{$item['text']}}</a>
                         </li>

@@ -24,7 +24,7 @@ class BookImageController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**

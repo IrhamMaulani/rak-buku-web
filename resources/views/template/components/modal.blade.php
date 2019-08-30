@@ -1,7 +1,7 @@
 
 
 
-   <div class="modal fade" id="{{$modalId}}" role="dialog">
+   <div class="modal fade" id="{{$modalId}}" role="dialog" >
                                         <div class="modal-dialog  {{$modalSize == 'default' ? 'modals-' : 'modal-'}}{{$modalSize}}">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -12,8 +12,10 @@
                                              <p> {{ $modalContent }} </p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Save changes</button>
+                                                <button type="submit" class="btn btn-default" >{{$buttonTitle}}</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                                {{$footerContent}}
                                             </div>
                                         </div>
                                     </div>

@@ -22,7 +22,7 @@
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-3">
 								<div class="breadcomb-report">
 								<button data-toggle="modal" data-target="#{{$button['datatarget']}}" 
-									data-placement="left" title="{{$button['title']}}" class="btn">
+								data-placement="left" title="{{$button['title']}}" id="{{$button['id']}}" class="btn" }}'>
                                         <i class="notika-icon notika-{{$button['icon']}}"></i></button>
 								</div>
 							</div>

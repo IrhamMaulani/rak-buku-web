@@ -2,18 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserCollection;
+use App\Author;
+use App\Http\Requests\UserValidation;
 
 class UserController extends Controller
 {
+
+    private $user, $author;
+
+    public function __construct(User $user, Author $author)
+    {
+        $this->user = $user;
+        $this->author = $author;
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $request->ajax() ? new UserCollection($this->user->with('roles')->get()) : view('admin.home');
     }
 
     /**
@@ -32,9 +47,18 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserValidation $request)
     {
-        //
+        try {
+            $this->user->create(array_merge(
+                $request->except(['password_confirmation', 'roles']),
+                ['isAuthor' => $this->author->isAuthor($request->roles)]
+            ))->roles()->attach($request->roles);
+
+            return response()->json('success');
+        } catch (\Exception $e) {
+            return response()->json('failed' . $e);
+        }
     }
 
     /**
@@ -66,9 +90,22 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserValidation $request, $id)
     {
-        //
+
+        $user = $this->user->findOrFail($id);
+        try {
+            $user->update(array_merge(
+                $request->except(['password_confirmation', 'roles']),
+                ['isAuthor' => $this->author->isAuthor($request->roles)]
+            ));
+
+            $user->roles()->sync($request->roles);
+
+            return response()->json('success');
+        } catch (\Exception $e) {
+            return response()->json('failed' . $e);
+        }
     }
 
     /**
@@ -79,6 +116,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $this->user->destroy($id);
+            return response()->json('success');
+        } catch (\Exception $e) {
+            return response()->json('failed' . $e);
+        }
     }
 }

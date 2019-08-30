@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title', "Title")</title>
 
      <meta name="description" content="">
@@ -42,8 +44,15 @@
 		============================================ -->
     <link href="{{ asset('css/scrollbar/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
     <!-- jvectormap CSS
-		============================================ -->
+    ============================================ -->
+    
     <link href="{{ asset('css/jvectormap/jquery-jvectormap-2.0.3.css') }}" rel="stylesheet">
+
+
+     <link rel="stylesheet" href="{{ asset('css/bootstrap-select/bootstrap-select.css')}}">
+
+     <link rel="stylesheet" href="{{ asset('css/chosen/chosen.css')}}">
+
     <!-- notika icon CSS
 		============================================ -->
     <link href="{{ asset('css/notika-custom-icon.css') }}" rel="stylesheet">
@@ -61,6 +70,7 @@
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
 
      <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+     
 
      @yield('css')
 
@@ -119,20 +129,12 @@
 
     {{-- End Content --}}
 
+    @yield('modal')
+
 
    {{--  Footer --}}
 
-   <div class="footer-copyright-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="footer-copy-right">
-                    @yield('footer')
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('template.footer')
 
      {{--End Footer --}}
 
@@ -210,6 +212,11 @@
 <!-- plugins JS
     ============================================ -->
     <script src="{{asset('js/plugins.js')}}"></script>
+
+     <script src="{{ asset('js/bootstrap-select/bootstrap-select.js')}}"></script>
+
+    <script src="{{ asset('js/chosen/chosen.jquery.js')}}"></script>
+
 <!--  Chat JS
     ============================================ -->
     <script src="{{asset('js/chat/moment.min.js')}}"></script>
@@ -218,6 +225,8 @@
 <!-- main JS
     ============================================ -->
     <script src="{{asset('js/main.js')}}"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- tawk chat JS
     ============================================ -->
     {{-- <script src="{{asset('js/tawk-chat.js')}}"></script> --}}

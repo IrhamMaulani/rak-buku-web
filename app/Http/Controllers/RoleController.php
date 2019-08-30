@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use Illuminate\Http\Request;
+use App\Http\Resources\RoleCollection;
 
 class RoleController extends Controller
 {
@@ -12,9 +13,11 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) return new RoleCollection(Role::get());
+
+        return new RoleCollection(Role::get());
     }
 
     /**

@@ -3,12 +3,14 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'is_author', 'reputation'
     ];
 
     /**
@@ -36,4 +38,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+
+
+    public function hasRole($roleName)
+    {
+        // $roles = explode("&", $roleNames);
+
+        foreach ($this->roles as $role) {
+            if ($role->role_name === $roleName) return true;
+        }
+        return false;
+    }
+
+    public static function isAuthor($isAuthor)
+    {
+
+        return $isAuthor == 1 ? 'Author' : 'Bukan Author';
+    }
 }

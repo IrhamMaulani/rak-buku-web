@@ -3,7 +3,7 @@
 
 return [
 
-      'title'   =>  'Notika Integration',
+      'title'   =>  'Rak Buku',
 
       // show or hide default widget.
       // default widget can be found in header-widgets.blade.php
@@ -12,26 +12,28 @@ return [
 
       'icon'      => 'img/favicon.ico',
 
+      'footer-text' => 'Copyright © 2018 . All rights reserved. Template by Colorlib.',
+
       // add target for nested menu
 
       'menus'    =>  [
             [
                   'text' =>   'Home',
-                  'url'  =>   '',
+                  'url'  =>   'home',
                   'icon' =>   'notika-house',
             ],
             [
-                  'text' => 'Data',
-                  'icon' => 'notika-app',
-                  'target' => 'mailbox',
+                  'text' => 'Books',
+                  'icon' => 'notika-form',
+                  'target' => 'book',
                   'url' => [
-                        'dataaaa',
-                        'data',
+                        'add-book',
+                        'aaa',
                   ],
                   'nested' => [
 
                         [
-                              'text' => 'main-data',
+                              'text' => 'Add Book',
                         ],
                         [
                               'text' => 'main-s',
@@ -40,15 +42,27 @@ return [
             ],
 
             [
-                  'text' => 'Wew',
-                  'icon' => 'notika-draft',
-                  'target' => 'Interface',
+                  'text' => 'User',
+                  'icon' => 'notika-support',
+                  'target' => 'User',
                   'url' => [
-                        'ca'
+                        'user',
+                        'moderator',
+                        'member',
+                        'author',
                   ],
                   'nested' => [
                         [
-                              'text' => 'main-wew',
+                              'text' => 'All',
+                        ],
+                        [
+                              'text' => 'Moderator',
+                        ],
+                        [
+                              'text' => 'Member',
+                        ],
+                        [
+                              'text' => 'Author',
                         ],
                   ],
             ],
