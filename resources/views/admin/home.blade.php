@@ -234,7 +234,6 @@
                 element.style.visibility = "hidden";
                 element.required = false;
             });
-
         }
 
           function showComponents(params){
