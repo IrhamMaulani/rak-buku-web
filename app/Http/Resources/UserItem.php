@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\RoleItem;
+use App\Http\Resources\ReputationItem;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserItem extends JsonResource
@@ -18,7 +20,7 @@ class UserItem extends JsonResource
             'id'   =>   $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'reputation' => $this->reputation,
+            'reputation' => new ReputationItem($this->reputation),
             'is_author' => $this->isAuthor($this->is_author),
             'roles' => RoleItem::collection($this->roles),
             'role_name' => $this->whenPivotLoaded('role_user', function () {

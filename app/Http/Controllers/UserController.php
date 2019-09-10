@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
-use App\Http\Resources\UserCollection;
 use App\Author;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserItem;
 use App\Http\Requests\UserValidation;
+use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
 {
@@ -28,7 +29,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return $request->ajax() ? new UserCollection($this->user->with('roles')->get()) : view('admin.home');
+        // return $request->ajax() ? new UserCollection($this->user->with('roles')->get()) : view('admin.home');
+        return new UserCollection($this->user->with('roles')->get());
     }
 
     /**
@@ -69,7 +71,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return new UserItem($this->user->findOrFail($id));
     }
 
     /**

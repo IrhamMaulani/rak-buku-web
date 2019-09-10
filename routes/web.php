@@ -24,12 +24,7 @@ Route::get('/', function () {
 
 // Route::group(['middleware' => ['auth', 'role:moderator']], function () {
 
-Route::prefix('admin')->group(function () {
 
-    // Route::get('home', 'AdminController@index');
-    Route::resource('user', 'UserController');
-    Route::resource('role', 'RoleController');
-});
 // });
 
 

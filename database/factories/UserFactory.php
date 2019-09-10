@@ -15,6 +15,7 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+    $reputationId = App\Reputation::pluck('id')->toArray();
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -22,6 +23,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'password' => '123456789', // secret
         'remember_token' => Str::random(10),
         'is_author' =>  $faker->numberBetween($min = 0, $max = 1),
-        'reputation'    => $faker->randomElement(['wizard', 'crafter', 'fire keeper', 'book worm', 'neutral']),
+        'reputation_id'    => $faker->randomElement($reputationId),
     ];
 });

@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Role');
     }
 
+    public function reputation()
+    {
+        return $this->belongsTo('App\Reputation');
+    }
+
 
     public function hasRole($roleName)
     {
