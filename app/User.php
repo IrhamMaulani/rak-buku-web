@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_author', 'reputation'
+        'name', 'email', 'password', 'is_author', 'reputation_id'
     ];
 
     /**
@@ -61,9 +61,16 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * @deprecated
+     * 
+     * @param integer
+     * 
+     * @return string
+     */
     public static function isAuthor($isAuthor)
     {
-
+        trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
         return $isAuthor == 1 ? 'Author' : 'Bukan Author';
     }
 }
