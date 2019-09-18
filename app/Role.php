@@ -10,4 +10,19 @@ class Role extends Model
     {
         return $this->belongsToMany('App\User');
     }
+
+    /**
+     * Get Id From Response in Array
+     * @param array $roles
+     * @todo change to collection
+     * @return array
+     */
+    public static function getId($roles)
+    {
+        $ids = [];
+        foreach ($roles as $role) {
+            $ids[] = $role['id'];
+        }
+        return $ids;
+    }
 }
