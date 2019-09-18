@@ -20,8 +20,7 @@ class UserItem extends JsonResource
             'id'   =>   $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'reputation' => new ReputationItem($this->reputation),
-            'is_author' => $this->isAuthor($this->is_author),
+            'reputation' =>  new ReputationItem($this->reputation),
             'roles' => RoleItem::collection($this->roles),
             'role_name' => $this->whenPivotLoaded('role_user', function () {
                 return $this->pivot->name;
