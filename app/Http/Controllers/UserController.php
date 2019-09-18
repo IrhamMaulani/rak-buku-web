@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use App\Author;
 use Illuminate\Http\Request;
@@ -11,17 +12,14 @@ use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
 {
+    private $user, $author, $role;
 
-    private $user, $author;
-
-    public function __construct(User $user, Author $author)
+    public function __construct(User $user, Author $author, Role $role)
     {
         $this->user = $user;
         $this->author = $author;
+        $this->role = $role;
     }
-
-
-
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +28,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // return $request->ajax() ? new UserCollection($this->user->with('roles')->get()) : view('admin.home');
-        return new UserCollection($this->user->with('roles')->get());
+        return new UserCollection($this->user->with(['roles', 'reputation'])->get());
     }
 
     /**
@@ -51,13 +49,16 @@ class UserController extends Controller
      */
     public function store(UserValidation $request)
     {
+
         try {
             $this->user->create(array_merge(
-                $request->except(['password_confirmation', 'roles']),
-                ['isAuthor' => $this->author->isAuthor($request->roles)]
-            ))->roles()->attach($request->roles);
-
-            return response()->json('success');
+                $request->except([
+                    'password_confirmation',
+                    'roles'
+                ]),
+                ['reputation_id' => $request->reputation['id']]
+            ))->roles()->attach($this->role->getId($request->roles));
+            return response()->json(__('app.store_success'));
         } catch (\Exception $e) {
             return response()->json('failed' . $e);
         }
@@ -98,11 +99,14 @@ class UserController extends Controller
         $user = $this->user->findOrFail($id);
         try {
             $user->update(array_merge(
-                $request->except(['password_confirmation', 'roles']),
-                ['isAuthor' => $this->author->isAuthor($request->roles)]
+                $request->except([
+                    'password_confirmation',
+                    'roles'
+                ]),
+                ['reputation_id' => $request->reputation['id']]
             ));
 
-            $user->roles()->sync($request->roles);
+            $user->roles()->sync($this->role->getId($request->roles));
 
             return response()->json('success');
         } catch (\Exception $e) {
