@@ -8,6 +8,14 @@ use App\Http\Resources\RoleCollection;
 
 class RoleController extends Controller
 {
+
+    private $role;
+
+    public function __construct(Role $role)
+    {
+        $this->role = $role;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +23,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) return new RoleCollection(Role::get());
-
-        return new RoleCollection(Role::get());
+        return new RoleCollection($this->role->get());
     }
 
     /**

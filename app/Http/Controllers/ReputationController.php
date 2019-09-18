@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Reputation;
 use Illuminate\Http\Request;
+use App\Http\Resources\ReputationCollection;
 
 class ReputationController extends Controller
 {
+
+    private $reputation;
+
+    public function __construct(Reputation $reputation)
+    {
+        $this->reputation = $reputation;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,7 @@ class ReputationController extends Controller
      */
     public function index()
     {
-        //
+        return new ReputationCollection($this->reputation->get());
     }
 
     /**
