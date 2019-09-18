@@ -22,4 +22,5 @@ Route::prefix('admin')->group(function () {
     // Route::get('home', 'AdminController@index');
     Route::resource('user', 'UserController');
     Route::resource('role', 'RoleController');
+    Route::resource('reputation', 'ReputationController');
 });
