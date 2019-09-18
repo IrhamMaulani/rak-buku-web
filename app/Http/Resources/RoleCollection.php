@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Http\Resources\RoleItem;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\ReputationItem;
 
 class RoleCollection extends ResourceCollection
 {
