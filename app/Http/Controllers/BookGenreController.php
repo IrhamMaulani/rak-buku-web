@@ -2,22 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use App\Author;
+use App\BookGenre;
 use Illuminate\Http\Request;
-use App\Http\Resources\BookCollection;
 
-class BookController extends Controller
+class BookGenreController extends Controller
 {
-
-    private $book, $author;
-
-    public function __construct(Book $book, Author $author)
-    {
-        $this->book = $book;
-        $this->author = $author;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +14,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        return new BookCollection($this->book->with(['publisher', ''])->get());
+        //
     }
 
     /**
@@ -52,10 +41,10 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param  \App\BookGenre  $bookGenre
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show(BookGenre $bookGenre)
     {
         //
     }
@@ -63,10 +52,10 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param  \App\BookGenre  $bookGenre
      * @return \Illuminate\Http\Response
      */
-    public function edit(Book $book)
+    public function edit(BookGenre $bookGenre)
     {
         //
     }
@@ -75,10 +64,10 @@ class BookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Book  $book
+     * @param  \App\BookGenre  $bookGenre
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, BookGenre $bookGenre)
     {
         //
     }
@@ -86,10 +75,10 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Book  $book
+     * @param  \App\BookGenre  $bookGenre
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy(BookGenre $bookGenre)
     {
         //
     }

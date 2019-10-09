@@ -23,4 +23,6 @@ Route::prefix('admin')->group(function () {
     Route::resource('user', 'UserController');
     Route::resource('role', 'RoleController');
     Route::resource('reputation', 'ReputationController');
+
+    Route::resource('book', 'BookController');
 });
