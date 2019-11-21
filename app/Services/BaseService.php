@@ -36,9 +36,9 @@ class BaseService
         return $this;
     }
 
-    public function setSearch($search)
+    public function setScope($scope, $value)
     {
-        $this->model = $this->model->search($search);
+        $this->model = $this->model->$scope($value);
         return $this;
     }
 }
