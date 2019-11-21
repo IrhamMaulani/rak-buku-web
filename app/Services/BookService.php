@@ -15,9 +15,9 @@ class BookService extends BaseService
         parent::__construct($book);
     }
 
-    public function getAllData($sortBy, $search, $pagination)
+    public function getAllData($sortBy, $search, $tag, $pagination)
     {
-        return  $this->setRelationship(['authors:id,name,pen_name', 'genres', 'score', 'checkBookmarked'])
-            ->setSearch($search)->sortBy($sortBy)->getDataPagination($pagination);
+        return  $this->setRelationship(['authors:id,name,pen_name', 'tags:id,name', 'score', 'checkBookmarked'])
+            ->setScope('search', $search)->setScope('tag', $tag)->sortBy($sortBy)->getDataPagination($pagination);
     }
 }
