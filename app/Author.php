@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Book;
 use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
@@ -18,5 +19,10 @@ class Author extends Model
     {
         trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
         return (in_array('3', $roles) ? 1 : 0);
+    }
+
+    public function books()
+    {
+        return $this->belongsToMany(Book::class);
     }
 }
