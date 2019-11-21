@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use App\Author;
+
 use Illuminate\Http\Request;
-use App\Http\Resources\BookCollection;
+use App\Services\BookService;
+
 
 class BookController extends Controller
 {
 
-    private $book, $author;
+    private  $bookService;
 
-    public function __construct(Book $book, Author $author)
+    public function __construct(BookService $bookService)
     {
-        $this->book = $book;
-        $this->author = $author;
+        $this->bookService = $bookService;
     }
 
     /**
@@ -23,9 +22,14 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new BookCollection($this->book->with(['publisher', ''])->get());
+        $sortBy = null;
+        $search = null;
+        if ($request->has('sortBy')) $sortBy = $request->query('sortBy');
+        if ($request->has('search')) $search = $request->query('search');
+
+        return response()->json($this->bookService->getAllData($sortBy, $search, 5));
     }
 
     /**
