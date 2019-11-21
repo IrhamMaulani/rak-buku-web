@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
+
+    protected $hidden = array('pivot');
+
     /**
      * @deprecated
      * Check If user has Author Roles based on roles array containt author foreign key

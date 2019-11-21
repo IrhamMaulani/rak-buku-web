@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
+    protected $hidden = array('pivot');
+
     public function publisher()
     {
         return $this->belongsTo('App\Publisher');
