@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Tag;
 use App\User;
 use App\Score;
 use App\Author;
@@ -40,6 +41,11 @@ class Book extends Model
         return $this->hasMany(Bookmark::class)->whereUserId(1);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function scopeSearch($query, $search)
     {
         if ($search === null) return $query;
@@ -47,10 +53,16 @@ class Book extends Model
             ->where("title", "LIKE", "%{$search}%")
             ->orWhereHas('authors', function ($query) use ($search) {
                 $query->where('name', 'LIKE', "%{$search}%");
-            })
-            ->orWhereHas('genres', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%");
             });
+    }
+
+    public function scopeTag($query, $tag)
+    {
+        if ($tag === null) return $query;
+
+        return $query->whereHas('tags', function ($query) use ($tag) {
+            $query->whereName($tag);
+        });
     }
 
     public function scopeIsBookMarked($query, $userId)
