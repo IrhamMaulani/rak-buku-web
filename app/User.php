@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -48,6 +49,11 @@ class User extends Authenticatable
     public function reputation()
     {
         return $this->belongsTo('App\Reputation');
+    }
+
+    public static function getAuthId()
+    {
+        return Auth::user()->id;
     }
 
 
