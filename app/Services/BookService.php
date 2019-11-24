@@ -17,7 +17,7 @@ class BookService extends BaseService
 
     public function getAllData($sortBy, $search, $tag, $pagination)
     {
-        return  $this->setRelationship(['authors:id,name,pen_name', 'tags:id,name', 'score', 'checkBookmarked'])
+        return  $this->setRelationship(['authors:id,name,pen_name', 'tags:id,name', 'score', 'checkBookmarked', 'bookImagesCover'])
             ->setScope('search', $search)->setScope('tag', $tag)->sortBy($sortBy)->getDataPagination($pagination);
     }
 }
