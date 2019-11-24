@@ -7,6 +7,7 @@ use App\User;
 use App\Score;
 use App\Author;
 use App\Bookmark;
+use App\BookImage;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -26,6 +27,16 @@ class Book extends Model
     public function authors()
     {
         return $this->belongsToMany(Author::class);
+    }
+
+    public function bookImages()
+    {
+        return $this->hasMany(BookImage::class);
+    }
+
+    public function bookImagesCover()
+    {
+        return $this->hasOne(BookImage::class)->whereIsCover(1);
     }
 
     public function score()
