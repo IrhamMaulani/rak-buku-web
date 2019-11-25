@@ -2,6 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Schema;
+
+
+
+
 class BaseService
 {
     private $model;
@@ -22,13 +27,18 @@ class BaseService
         return $this->model->paginate($data);
     }
 
-    public function sortBy($order)
+    public function orderBy($orderBy, $order)
     {
+
         if ($order === null) $order = 'asc';
 
-        $this->model = $this->model->orderBy('created_at', $order);
+        if ($orderBy === null) $orderBy = 'created_at';
+
+        $this->model = $this->model->orderBy($orderBy, $order);
         return $this;
     }
+
+
 
     public function setValue($value)
     {
