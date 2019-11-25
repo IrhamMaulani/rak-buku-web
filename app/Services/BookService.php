@@ -47,7 +47,7 @@ class BookService extends BaseService
 
         $books =  DB::table('books')
             ->join('scores', 'books.id', '=', 'scores.book_id')
-            ->select('books.id', 'books.title', DB::raw('sum(scores.score)as score'))
+            ->select('books.id', 'books.title', DB::raw('sum(scores.score)as score'), DB::raw('count(scores.user_id)as user_count'))
             ->groupBy('books.id')
             ->get();
 
@@ -55,7 +55,7 @@ class BookService extends BaseService
             foreach ($books as $book) {
                 $bookUpdate = $this->book->findOrFail($book->id);
 
-                $bookUpdate->score = $book->score;
+                $bookUpdate->score = ($book->score / $book->user_count);
 
                 $bookUpdate->save();
             }
