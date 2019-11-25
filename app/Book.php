@@ -8,11 +8,14 @@ use App\Score;
 use App\Author;
 use App\Bookmark;
 use App\BookImage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
     protected $hidden = array('pivot');
+
+    // protected $appends = ['score'];
 
     public function publisher()
     {
@@ -39,9 +42,9 @@ class Book extends Model
         return $this->hasOne(BookImage::class)->whereIsCover(1);
     }
 
-    public function score()
+    public function scores()
     {
-        return $this->hasOne(Score::class);
+        return $this->hasMany(Score::class);
     }
 
     public function bookmarks()
@@ -83,5 +86,10 @@ class Book extends Model
         return $query->whereHas('bookmarks', function ($query) use ($userId) {
             $query->whereUserId($userId);
         });
+    }
+
+    public function getScoreAttribute()
+    {
+        return  DB::table('scores')->whereBookId($this->id)->sum('score');
     }
 }
