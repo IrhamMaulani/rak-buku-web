@@ -24,14 +24,8 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $sortBy = null;
-        $search = null;
-        $tag = null;
-        if ($request->has('sortBy')) $sortBy = $request->query('sortBy');
-        if ($request->has('search')) $search = $request->query('search');
-        if ($request->has('tag')) $tag = $request->query('tag');
 
-        return response()->json($this->bookService->getAllData($sortBy, $search, $tag, 5));
+        return response()->json($this->bookService->getAllData($request));
     }
 
     /**
