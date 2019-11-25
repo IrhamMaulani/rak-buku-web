@@ -11,7 +11,7 @@ $factory->define(Score::class, function (Faker $faker) {
     $userId = App\User::pluck('id')->toArray();
 
     return [
-        'score' => $faker->company,
+        'score' => $faker->numberBetween($min = 1, $max = 10),
         'is_recomend' => $faker->numberBetween(0, 1),
         'is_favorite' => $faker->numberBetween(0, 1),
         'book_id' => $faker->randomElement($bookId),
