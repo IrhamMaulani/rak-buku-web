@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Review;
+use Illuminate\Http\Request;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 
 class ReviewService extends BaseService
@@ -16,10 +18,22 @@ class ReviewService extends BaseService
         parent::__construct($review);
     }
 
-    public function getAllData($sortBy, $search, $tag, $pagination)
+    public function getAllData(Request $request)
     {
-        return  $this->setRelationship(['user', 'book'])
-            ->setScope('search', $search)->setScope('tag', $tag)->sortBy($sortBy)->getDataPagination($pagination);
+        $search = null;
+        $tag = null;
+        $orderBy = null;
+        $order = null;
+        $limit = 5;
+
+        if ($request->has('orderBy')) $orderBy = $request->query('orderBy');
+        if ($request->has('search')) $search = $request->query('search');
+        if ($request->has('tag')) $tag = $request->query('tag');
+        if ($request->has('order')) $order = $request->query('order');
+        if ($request->has('limit')) $limit = $request->query('limit');
+
+        return  $this->setRelationship(['user:id,name', 'book:id,title,description,score'])
+            ->setScope('search', $search)->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
     public function syncAllResponse()
