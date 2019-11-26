@@ -3,18 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Review;
+use App\Services\ReviewService;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+
+    private $reviewService;
+
+    public function __construct(ReviewService $reviewService)
+    {
+        $this->reviewService = $reviewService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json($this->reviewService->getAllData($request));
     }
 
     /**
