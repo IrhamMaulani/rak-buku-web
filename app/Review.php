@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
+    protected $guarded = ['id'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,5 +24,17 @@ class Review extends Model
     public function reviewResponses()
     {
         return $this->hasMany(ReviewResponse::class);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search === null) return $query;
+        return $query
+            ->where("title", "LIKE", "%{$search}%")
+            ->orWhereHas('user', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            })->orWhereHas('book', function ($query) use ($search) {
+                $query->where('title', 'LIKE', "%{$search}%");
+            });
     }
 }
