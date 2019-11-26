@@ -33,7 +33,7 @@ class BookService extends BaseService
         if ($request->has('order')) $order = $request->query('order');
         if ($request->has('limit')) $limit = $request->query('limit');
 
-        return  $this->setRelationship(['authors:id,name,pen_name', 'tags:id,name', 'checkBookmarked', 'bookImagesCover'])
+        return  $this->setRelationship(['authors:id,name,pen_name', 'tags:id,name', 'checkBookmarked', 'bookImagesCover', 'publisher:id,name'])
             ->setScope('search', $search)->setScope('tag', $tag)->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
@@ -47,7 +47,14 @@ class BookService extends BaseService
 
         $books =  DB::table('books')
             ->join('scores', 'books.id', '=', 'scores.book_id')
-            ->select('books.id', DB::raw('sum(scores.score)as score'), DB::raw('count(scores.user_id)as user_count'))
+            ->select(
+                'books.id',
+                DB::raw('sum(scores.score)as score'),
+                DB::raw('count(scores.user_id)as user_count'),
+                DB::raw("(SELECT COUNT(scores.is_favorite) FROM scores WHERE
+                scores.book_id = books.id AND scores.is_favorite = 1 )
+                as favorites")
+            )
             ->groupBy('books.id')
             ->get();
 
@@ -56,6 +63,8 @@ class BookService extends BaseService
                 $bookUpdate = $this->book->findOrFail($book->id);
 
                 $bookUpdate->score = ($book->score / $book->user_count);
+
+                $bookUpdate->favorites = $book->favorites;
 
                 $bookUpdate->save();
             }
