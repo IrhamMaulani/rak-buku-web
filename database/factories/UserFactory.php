@@ -20,7 +20,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => '123456789', // secret
+        'password' =>  123456789, // secret
         'remember_token' => Str::random(10),
         'reputation_id'    => $faker->randomElement($reputationId),
     ];
