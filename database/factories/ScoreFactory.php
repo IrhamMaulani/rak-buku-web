@@ -12,7 +12,6 @@ $factory->define(Score::class, function (Faker $faker) {
 
     return [
         'score' => $faker->numberBetween($min = 1, $max = 10),
-        'is_recomend' => $faker->numberBetween(0, 1),
         'is_favorite' => $faker->numberBetween(0, 1),
         'book_id' => $faker->randomElement($bookId),
         'user_id' => $faker->randomElement($userId),
