@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+
+
+class LoginApiController extends Controller
+{
+    private $successStatus = 200;
+
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        $credentials = $request->only($this->username(), 'password');
+
+        // dd($credentials);
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'Your email or password was incorrect. Please try again!'
+            ], 401);
+        }
+
+        $user = $request->user();
+
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+
+        $token->save();
+        return response()->json([
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'user' => ['id' => $user->id, 'user_name' => $user->name],
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString()
+        ]);
+    }
+
+
+
+    public function username()
+    {
+        return 'email';
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+}
