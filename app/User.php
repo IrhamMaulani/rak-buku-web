@@ -81,4 +81,9 @@ class User extends Authenticatable
         trigger_error('Method ' . __METHOD__ . ' is deprecated', E_USER_DEPRECATED);
         return $isAuthor == 1 ? 'Author' : 'Bukan Author';
     }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }
