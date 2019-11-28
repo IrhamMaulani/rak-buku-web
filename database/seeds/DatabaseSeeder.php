@@ -26,5 +26,13 @@ class DatabaseSeeder extends Seeder
         $this->call(AuthorBookTableSeeder::class);
         $this->call(BookTagTableSeeder::class);
         $this->call(RoleUserTablerSeeder::class);
+
+        factory(App\User::class, 35)->create();
+
+        factory(App\Score::class, 100)->create();
+
+        factory(App\Review::class, 35)->create();
+
+        factory(App\ReviewResponse::class, 35)->create();
     }
 }
