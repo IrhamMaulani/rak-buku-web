@@ -87,9 +87,4 @@ class Book extends Model
             $query->whereUserId($userId);
         });
     }
-
-    public function getScoreAttribute()
-    {
-        return  DB::table('scores')->whereBookId($this->id)->sum('score');
-    }
 }
