@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Bookmark;
+use App\Services\BookMarkService;
 use Illuminate\Http\Request;
 
 class BookmarkController extends Controller
 {
+
+    private $bookmarkService;
+
+    public function __construct(BookMarkService $bookmarkService)
+    {
+        $this->bookmarkService = $bookmarkService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +43,7 @@ class BookmarkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($this->bookmarkService->addBookMark($request));
     }
 
     /**
