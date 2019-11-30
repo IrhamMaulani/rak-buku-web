@@ -54,7 +54,7 @@ class Book extends Model
 
     public function checkBookmarked()
     {
-        return $this->hasMany(Bookmark::class)->whereUserId(User::getAuthId());
+        return $this->hasOne(Bookmark::class)->whereUserId(User::getAuthId());
     }
 
     public function tags()
