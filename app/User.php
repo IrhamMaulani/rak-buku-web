@@ -55,7 +55,8 @@ class User extends Authenticatable
 
     public static function getAuthId()
     {
-        return Auth::user()->id;
+
+        return auth('api')->user() != null ? auth('api')->user()->id : null;
     }
 
 
