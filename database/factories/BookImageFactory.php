@@ -14,5 +14,6 @@ $factory->define(BookImage::class, function (Faker $faker) {
         'name' => $faker->imageUrl($width = 640, $height = 480),
         'book_id' => $faker->randomElement($bookId),
         'user_id' => $faker->randomElement($userId),
+        'is_cover' => $faker->numberBetween(0, 1)
     ];
 });
