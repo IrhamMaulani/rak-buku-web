@@ -37,6 +37,13 @@ class BookService extends BaseService
             ->setScope('search', $search)->setScope('tag', $tag)->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
+    public function getData($slug)
+    {
+
+        return $this->book->with(['authors:id,name,pen_name', 'tags:id,name', 'checkBookmarked', 'bookImagesCover', 'publisher:id,name', 'userScore'])
+            ->whereSlug($slug)->first();
+    }
+
     public function getPopularBook()
     {
         return $this->setRelationship(['scores'])->getDataPagination(10);
