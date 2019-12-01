@@ -32,7 +32,7 @@ class ReviewService extends BaseService
         if ($request->has('order')) $order = $request->query('order');
         if ($request->has('limit')) $limit = $request->query('limit');
 
-        return  $this->setRelationship(['user:id,name', 'book:id,title,description,score'])
+        return  $this->setRelationship(['user:id,name', 'book:id,title,description,score,slug'])
             ->setScope('search', $search)->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
