@@ -46,6 +46,10 @@ class Book extends Model
     {
         return $this->hasMany(Score::class);
     }
+    public function userScore()
+    {
+        return $this->hasOne(Score::class)->whereUserId(User::getAuthId());
+    }
 
     public function bookmarks()
     {
