@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Score;
+use App\Services\ScoreService;
 use Illuminate\Http\Request;
 
 class ScoreController extends Controller
 {
+
+    private $scoreService;
+
+    public function __construct(ScoreService $scoreService)
+    {
+        $this->scoreService = $scoreService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +44,7 @@ class ScoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($this->scoreService->addScore($request));
     }
 
     /**
