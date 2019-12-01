@@ -20,17 +20,14 @@ class BookMarkService extends BaseService
 
     public function addBookMark(Request $request)
     {
-        $bookmark = new Bookmark([
-            'status' => $request->status,
-            'is_owned' => $request->is_owned,
-            'user_id' => User::getAuthId(),
-            'book_id' => $request->book_id
-        ]);
-
-        if ($bookmark->save()) {
-            return "BookMark Successfull";
-        } else {
-            return "BookMark Failed";
+        try {
+            $this->bookmark->updateOrCreate(
+                ['user_id' => User::getAuthId(), 'book_id' => $request->book_id],
+                ['status' => $request->status]
+            );
+        } catch (\Throwable $th) {
+            return "Bookmark Failed";
         }
+        return "BookMark Successfull";
     }
 }
