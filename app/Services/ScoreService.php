@@ -38,17 +38,22 @@ class ScoreService extends BaseService
 
     public function syncScore($bookId)
     {
-        $scoreUpdate =  $this->score
-            ->select(
-                DB::raw('sum(score)as scores'),
-                DB::raw('count(user_id)as user_count')
-            )->whereBookId($bookId)
-            ->groupBy('book_id')
-            ->first();
+
+        $numberOfUserScore = $this->score->whereBookId($bookId)->count();
+
+        $averageAllBooks = $this->score->average('score');
+
+        $averageThisBook = $this->score->whereBookId($bookId)->average('score');
+
+        //Number for minimum score required for calculated. 10 user requried for this book calculated properly for now
+        $minimumScore = 10;
+
+        $score = ($numberOfUserScore / ($numberOfUserScore + $minimumScore) *
+            $averageThisBook + ($minimumScore / ($numberOfUserScore + $minimumScore)) * $averageAllBooks);
 
         $bookUpdate = $this->book->findOrFail($bookId);
 
-        $bookUpdate->score = ($scoreUpdate->scores / $scoreUpdate->user_count);
+        $bookUpdate->score = $score;
 
         $bookUpdate->save();
     }

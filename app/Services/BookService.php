@@ -51,25 +51,26 @@ class BookService extends BaseService
 
     public function syncAllScore()
     {
-
-        $books =  DB::table('books')
-            ->join('scores', 'books.id', '=', 'scores.book_id')
-            ->select(
-                'books.id',
-                DB::raw('sum(scores.score)as score'),
-                DB::raw('count(scores.user_id)as user_count'),
-                DB::raw("(SELECT COUNT(scores.is_favorite) FROM scores WHERE
-                scores.book_id = books.id AND scores.is_favorite = 1 )
-                as favorites")
-            )
-            ->groupBy('books.id')
-            ->get();
+        $books = $this->book->get();
 
         try {
             foreach ($books as $book) {
+
+                $numberOfUserScore = $this->score->whereBookId($book->id)->count();
+
+                $averageAllBooks = $this->score->average('score');
+
+                $averageThisBook = $this->score->whereBookId($book->id)->average('score');
+
+                //Number for minimum score required for calculated. 10 user requried for this book calculated properly for now
+                $minimumScore = 10;
+
+                $score = ($numberOfUserScore / ($numberOfUserScore + $minimumScore) *
+                    $averageThisBook + ($minimumScore / ($numberOfUserScore + $minimumScore)) * $averageAllBooks);
+
                 $bookUpdate = $this->book->findOrFail($book->id);
 
-                $bookUpdate->score = ($book->score / $book->user_count);
+                $bookUpdate->score = $score;
 
                 $bookUpdate->favorites = $book->favorites;
 
