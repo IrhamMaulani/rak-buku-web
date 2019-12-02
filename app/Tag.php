@@ -14,4 +14,13 @@ class Tag extends Model
     {
         return $this->belongsToMany(Book::class);
     }
+
+    public static function getId($tags)
+    {
+        $ids = [];
+        foreach ($tags as $tag) {
+            $ids[] = $tag['id'];
+        }
+        return $ids;
+    }
 }
