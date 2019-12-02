@@ -44,41 +44,6 @@ class BookService extends BaseService
             ->whereSlug($slug)->first();
     }
 
-    public function getPopularBook()
-    {
-        return $this->setRelationship(['scores'])->getDataPagination(10);
-    }
-
-    public function syncAllScore()
-    {
-        $books = $this->book->get();
-
-        try {
-            foreach ($books as $book) {
-
-                $numberOfUserScore = $this->score->whereBookId($book->id)->count();
-
-                $averageAllBooks = $this->score->average('score');
-
-                $averageThisBook = $this->score->whereBookId($book->id)->average('score');
-
-                //Number for minimum score required for calculated. 10 user requried for this book calculated properly for now
-                $minimumScore = 10;
-
-                $score = ($numberOfUserScore / ($numberOfUserScore + $minimumScore) *
-                    $averageThisBook + ($minimumScore / ($numberOfUserScore + $minimumScore)) * $averageAllBooks);
-
-                $bookUpdate = $this->book->findOrFail($book->id);
-
-                $bookUpdate->score = $score;
-
-                $bookUpdate->favorites = $book->favorites;
-
-                $bookUpdate->save();
-            }
-        } catch (\Throwable $th) {
-            dd($th);
-        }
-        return "Success";
-    }
+    public function addData(Request $request)
+    { }
 }
