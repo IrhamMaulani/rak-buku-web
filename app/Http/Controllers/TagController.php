@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Tag;
+use App\Services\TagService;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    private $tagService;
+
+    public function __construct(TagService $tagService)
+    {
+        $this->tagService = $tagService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json($this->tagService->getAllData());
     }
 
     /**
