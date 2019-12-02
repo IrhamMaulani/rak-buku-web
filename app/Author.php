@@ -28,4 +28,10 @@ class Author extends Model
     {
         return $this->belongsToMany(Book::class);
     }
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search === null) return $query;
+        return $query->where("name", "LIKE", "%{$search}%")->orWhere('pen_name', "LIKE", "%{$search}%");
+    }
 }
