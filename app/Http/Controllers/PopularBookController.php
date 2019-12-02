@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\BookService;
+use App\Services\ScoreService;
 
 class PopularBookController extends Controller
 {
-    private $bookService;
+    private $scoreService;
 
 
-    public function __construct(BookService $bookService)
+    public function __construct(ScoreService $scoreService)
     {
-        $this->bookService = $bookService;
+        $this->scoreService = $scoreService;
     }
 
     public function index(Request $request)
     {
-        return response()->json($this->bookService->syncAllScore());
+        return response()->json($this->scoreService->syncAllScore());
     }
 
     public function update()
     {
-        return response()->json($this->bookService->syncAllScore());
+        return response()->json($this->scoreService->syncAllScore());
     }
 }
