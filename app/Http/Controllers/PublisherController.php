@@ -4,17 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Publisher;
 use Illuminate\Http\Request;
+use App\Services\PublisherService;
 
 class PublisherController extends Controller
 {
+    private $publisherService;
+
+    public function __construct(PublisherService $publisherService)
+    {
+        $this->publisherService = $publisherService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json($this->publisherService->getAllData($request));
     }
 
     /**
