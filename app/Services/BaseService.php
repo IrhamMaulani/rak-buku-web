@@ -38,11 +38,16 @@ class BaseService
         return $this;
     }
 
+    public function getAllDatas()
+    {
+        return $this->model->get();
+    }
+
 
 
     public function setValue($value)
     {
-        $this->model = $this->mode->select($value);
+        $this->model = $this->model->select($value);
         return $this;
     }
 
