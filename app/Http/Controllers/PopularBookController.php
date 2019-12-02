@@ -16,7 +16,9 @@ class PopularBookController extends Controller
     }
 
     public function index(Request $request)
-    { }
+    {
+        return response()->json($this->bookService->syncAllScore());
+    }
 
     public function update()
     {
