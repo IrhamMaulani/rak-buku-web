@@ -15,7 +15,7 @@ class Book extends Model
 {
     protected $hidden = array('pivot');
 
-    // protected $appends = ['score'];
+    protected $guarded = ['id'];
 
     public function publisher()
     {
