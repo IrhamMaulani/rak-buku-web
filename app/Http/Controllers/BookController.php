@@ -46,7 +46,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($this->bookService->addData($request));
     }
 
     /**
