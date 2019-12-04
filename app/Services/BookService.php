@@ -5,17 +5,20 @@ use App\Book;
 use App\User;
 use App\Score;
 use Illuminate\Http\Request;
+use App\Helpers\StringHelper;
 use App\Helpers\UploadHelper;
 use Illuminate\Support\Facades\DB;
+
 class BookService extends BaseService
 {
-    private $book, $score, $tag;
-    public function __construct(Book $book, Score $score, Tag $tag, UploadHelper $uploadHelper)
+    private $book, $score, $tag,$stringHelper;
+    public function __construct(Book $book, Score $score, Tag $tag, UploadHelper $uploadHelper, StringHelper $stringHelper)
     {
         $this->book = $book;
         $this->score = $score;
         $this->tag = $tag;
         $this->uploadHelper = $uploadHelper;
+        $this->stringHelper = $stringHelper;
         parent::__construct($book);
     }
     public function getAllData(Request $request)
@@ -40,6 +43,7 @@ class BookService extends BaseService
     }
     public function addData(Request $request)
     {
+       
         try {
             DB::transaction(function () use ($request) {
                 
@@ -61,8 +65,8 @@ class BookService extends BaseService
                     
                     $book->bookImages()->create($bookImages);
                 }
-                $book->tags()->sync($request->tags);
-                $book->authors()->sync($request->authors);
+                $book->tags()->sync($this->stringHelper->stringToArrayConversion($request->tags, ','));
+                $book->authors()->sync($this->stringHelper->stringToArrayConversion($request->authors, ','));
             });
         } catch (\Throwable $th) {
             return $th;
