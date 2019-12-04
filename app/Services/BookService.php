@@ -2,20 +2,24 @@
 
 namespace App\Services;
 
+use App\Tag;
 use App\Book;
+use App\User;
 use App\Score;
 use Illuminate\Http\Request;
+use App\Helpers\UploadHelper;
 use Illuminate\Support\Facades\DB;
 
 class BookService extends BaseService
 {
+    private $book, $score, $tag;
 
-    private $book, $score;
-
-    public function __construct(Book $book, Score $score)
+    public function __construct(Book $book, Score $score, Tag $tag, UploadHelper $uploadHelper)
     {
         $this->book = $book;
         $this->score = $score;
+        $this->tag = $tag;
+        $this->uploadHelper = $uploadHelper;
         parent::__construct($book);
     }
 
@@ -45,5 +49,35 @@ class BookService extends BaseService
     }
 
     public function addData(Request $request)
-    { }
+    {
+        try {
+            DB::transaction(function () use ($request) {
+                $userId = User::getAuthId();
+
+                $book = new Book($request->except(['book_images', 'tags']));
+                $book->save();
+
+                if ($request->hasFile('book_images')) {
+                    $bookImages = [];
+                    foreach ($request->file('book_images') as $bookImage) {
+                        $bookImagesName = $this->uploadHelper->uploadFile(
+                            $bookImage,
+                            $request->title,
+                            'book_images'
+                        );
+                        $bookImages[] = [
+                            'name' => $bookImagesName,
+                            'user_id' =>  $userId,
+                        ];
+                    }
+                    $book->bookImages()->createMany($bookImages);
+                }
+
+                $book->tags()->sync($this->tag->getId($request->tags));
+            });
+        } catch (\Throwable $th) {
+            return 'Failed';
+        }
+        return "Success";
+    }
 }
