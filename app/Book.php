@@ -91,4 +91,10 @@ class Book extends Model
             $query->whereUserId($userId);
         });
     }
+
+    public static function slug($title, $volume, $edition){
+        
+        $slug = $title . ' ' . $volume . ' ' . $edition;
+        return str_slug($slug, '-');
+    }
 }
