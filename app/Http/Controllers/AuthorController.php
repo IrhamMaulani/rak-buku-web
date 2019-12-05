@@ -42,7 +42,7 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($this->authorService->addData($request));
     }
 
     /**
