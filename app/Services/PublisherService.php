@@ -31,4 +31,15 @@ class PublisherService extends BaseService
         return  $this->setScope('search', $search)->setValue(['id', 'name'])
             ->orderBy($orderBy, $order)->getAllDatas();
     }
+
+    public function addData(Request $request)
+    {
+       try {
+            $this->publisher->create($request->all());
+            
+        } catch (\Exception $e) {
+               return 'Failed';
+        }
+        return "Success";
+    }
 }
