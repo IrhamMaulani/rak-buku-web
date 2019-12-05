@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserSocialMediaTable extends Migration
+class CreateAuthorSocialMediaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateUserSocialMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_social_media', function (Blueprint $table) {
-
-            $table->unsignedInteger('user_id');
+        Schema::create('author_social_media', function (Blueprint $table) {
+              $table->unsignedInteger('author_id');
 
             $table->unsignedInteger('social_media_id');
 
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->string('url');
+
+            $table->foreign('author_id')->references('id')->on('authors')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('social_media_id')->references('id')->on('social_medias')
@@ -34,6 +35,6 @@ class CreateUserSocialMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_social_media');
+        Schema::dropIfExists('author_social_media');
     }
 }
