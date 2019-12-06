@@ -43,6 +43,10 @@ class BaseService
         return $this->model->get();
     }
 
+    public function getFirst(){
+        return $this->model->first();
+    }
+
 
 
     public function setValue($value)
