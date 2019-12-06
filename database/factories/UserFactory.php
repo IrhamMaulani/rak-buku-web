@@ -18,6 +18,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     $reputationId = App\Reputation::pluck('id')->toArray();
     return [
         'name' => $faker->name,
+        'full_name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' =>  123456789, // secret
