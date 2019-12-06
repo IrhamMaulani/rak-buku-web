@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\UserImage;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
@@ -57,6 +58,10 @@ class User extends Authenticatable
     {
 
         return auth('api')->user() != null ? auth('api')->user()->id : null;
+    }
+
+    public function imageProfile(){
+        return $this->hasOne(UserImage::class)->whereIsUse(1);
     }
 
 
