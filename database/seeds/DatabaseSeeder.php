@@ -34,5 +34,7 @@ class DatabaseSeeder extends Seeder
         factory(App\Review::class, 35)->create();
 
         factory(App\ReviewResponse::class, 35)->create();
+
+        $this->call(SocialMediasTableSeeder::class);
     }
 }
