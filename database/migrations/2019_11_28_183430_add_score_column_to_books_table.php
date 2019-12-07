@@ -14,7 +14,7 @@ class AddScoreColumnToBooksTable extends Migration
     public function up()
     {
         Schema::table('books', function (Blueprint $table) {
-            $table->integer('score');
+            $table->double('score', 8, 2);
         });
     }
 
