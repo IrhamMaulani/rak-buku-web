@@ -15,5 +15,6 @@ $factory->define(Bookmark::class, function (Faker $faker) {
         'is_owned' => $faker->numberBetween(0, 1),
         'book_id' => $faker->randomElement($bookId),
         'user_id' => $faker->randomElement($userId),
+        'is_favorite' => $faker->numberBetween(0, 1),
     ];
 });
