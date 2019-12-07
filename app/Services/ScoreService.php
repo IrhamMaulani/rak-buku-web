@@ -52,7 +52,7 @@ class ScoreService extends BaseService
 
         $bookUpdate = $this->book->findOrFail($bookId);
 
-        $bookUpdate->score = $score;
+        $bookUpdate->score = number_format($score, 2, '.', '');
 
         $bookUpdate->save();
     }
@@ -78,7 +78,7 @@ class ScoreService extends BaseService
 
                 $bookUpdate = $this->book->findOrFail($book->id);
 
-                $bookUpdate->score = $score;
+                $bookUpdate->score = number_format($score, 2, '.', '');
 
                 $bookUpdate->favorites = $book->favorites;
 
