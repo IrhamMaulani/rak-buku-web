@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 
 
@@ -62,5 +66,37 @@ class LoginApiController extends Controller
             $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
+    }
+     public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+        'old_password'=> 'required',
+         'password' => 'required|min:6',
+        'confirm_password' => 'required|same:password',
+    ]);
+        if ($validator->fails()) {
+            return response()->json([
+            'message' => 'Failed Change Password',
+            'error' => $validator->errors()
+        ], 422);
+        }
+        $userId = User::getAuthId();
+        $user = User::findOrFail($userId);
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+            'message' => 'Password Lama Salah'
+        ]);
+        }
+        $user->password = $request->password;
+        $user->save();
+        if ($user) {
+            return response()->json([
+            'message' => 'Password Sukses Di Ubah'
+        ]);
+        } else {
+            return response()->json([
+            'message' => 'Terjadi Kesalahan. Coba Lagi'
+        ]);
+        }
     }
 }
