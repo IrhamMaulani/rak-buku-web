@@ -85,7 +85,7 @@ class LoginApiController extends Controller
         if (!Hash::check($request->old_password, $user->password)) {
             return response()->json([
             'message' => 'Password Lama Salah'
-        ]);
+            ], 422);
         }
         $user->password = $request->password;
         $user->save();
