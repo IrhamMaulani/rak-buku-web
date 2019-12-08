@@ -37,4 +37,10 @@ class Review extends Model
                 $query->where('title', 'LIKE', "%{$search}%");
             });
     }
+
+    public function scopeBook($query, $bookId){
+         if ($bookId === null) return $query;
+
+         return $query->whereBookId($bookId);
+    }
 }
