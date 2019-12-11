@@ -97,4 +97,8 @@ class Book extends Model
         $slug = $title . ' ' . $volume . ' ' . $edition;
         return str_slug($slug, '-');
     }
+
+    public function getIdBySlug($slug){
+        return $this->whereSlug($slug)->first()->id;
+    }
 }
