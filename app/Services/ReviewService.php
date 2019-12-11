@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Book;
+use App\User;
 use App\Review;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
@@ -10,30 +12,56 @@ use Illuminate\Support\Facades\DB;
 class ReviewService extends BaseService
 {
 
-    private $review;
+    private $review, $book, $user;
 
-    public function __construct(Review $review)
+    public function __construct(Review $review, Book $book, User $user)
     {
         $this->review = $review;
+        $this->book = $book;
+        $this->user = $user;
         parent::__construct($review);
     }
 
     public function getAllData(Request $request)
     {
         $search = null;
-        $tag = null;
+        $bookId = null;
         $orderBy = null;
         $order = null;
         $limit = 5;
 
         if ($request->has('orderBy')) $orderBy = $request->query('orderBy');
         if ($request->has('search')) $search = $request->query('search');
-        if ($request->has('tag')) $tag = $request->query('tag');
+        if ($request->has('bookSlug')) $bookId =$this->book->getIdBySlug($request->query('bookSlug'));
         if ($request->has('order')) $order = $request->query('order');
         if ($request->has('limit')) $limit = $request->query('limit');
 
-        return  $this->setRelationship(['user:id,name', 'book:id,title,description,score,slug'])
-            ->setScope('search', $search)->orderBy($orderBy, $order)->getDataPagination($limit);
+        return  $this->setRelationship(['user.imageProfile', 'book:id,title,description,score,slug'])
+            ->setScope('search', $search)->setScope('book', $bookId)->orderBy($orderBy, $order)->getDataPagination($limit);
+    }
+
+    public function addData(Request $request){
+        $bookId = $this->book->getIdBySlug($request->slug);
+
+        $userId = $this->user->getAuthId();
+
+        $slug = $request->title . ' ' . ' ' . $bookId . ' ' . $userId;
+
+        try {
+        $review = $this->review;
+        $review->title = $request->title;
+        $review->content = $request->content;
+        $review->user_id = $bookId;
+        $review->book_id = $bookId;
+        $review->slug = str_slug($slug, '-');
+
+        $review->save();
+        } catch (\Throwable $th) {
+            return "Failed";
+        }
+
+        return "Success";
+
     }
 
     public function syncAllResponse()

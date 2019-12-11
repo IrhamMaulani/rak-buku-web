@@ -44,7 +44,7 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($this->reviewService->addData($request));
     }
 
     /**
