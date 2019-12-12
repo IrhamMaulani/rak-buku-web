@@ -70,10 +70,8 @@ class Book extends Model
     {
         if ($search === null) return $query;
         return $query
-            ->where("title", "LIKE", "%{$search}%")
-            ->orWhereHas('authors', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%");
-            });
+            ->where("title", "LIKE", "%{$search}%");
+            
     }
 
     public function scopeTag($query, $tag)
@@ -83,6 +81,15 @@ class Book extends Model
         return $query->whereHas('tags', function ($query) use ($tag) {
             $query->whereName($tag);
         });
+    }
+
+       public function scopeAuthor($query, $name)
+    {
+        if ($name === null) return $query;
+
+        return $query->whereHas('authors', function ($query) use ($name) {
+                $query->where('name', 'LIKE', "%{$name}%");
+            });
     }
 
     public function scopeIsBookMarked($query, $userId)
