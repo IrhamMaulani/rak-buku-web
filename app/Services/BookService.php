@@ -29,6 +29,7 @@ class BookService extends BaseService
         $order = null;
         $limit = 5;
         $author = null;
+        $publisher = null;
 
         if ($request->has('orderBy')) $orderBy = $request->query('orderBy');
         if ($request->has('search')) $search = $request->query('search');
@@ -36,9 +37,11 @@ class BookService extends BaseService
         if ($request->has('order')) $order = $request->query('order');
         if ($request->has('limit')) $limit = $request->query('limit');
         if ($request->has('author')) $author = $request->query('author');
+        if ($request->has('publisher')) $publisher = $request->query('publisher');
 
         return  $this->setRelationship(['authors:id,name,pen_name', 'tags:id,name', 'checkBookmarked', 'bookImagesCover', 'publisher:id,name'])
-            ->setScope('search', $search)->setScope('author', $author)->setScope('tag', $tag)->orderBy($orderBy, $order)->getDataPagination($limit);
+            ->setScope('search', $search)->setScope('publisher', $publisher)->setScope('author', $author)->setScope('tag', $tag)
+            ->orderBy($orderBy, $order)->getDataPagination($limit);
     }
     public function getData($slug)
     {

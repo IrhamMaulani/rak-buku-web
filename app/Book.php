@@ -83,12 +83,21 @@ class Book extends Model
         });
     }
 
-       public function scopeAuthor($query, $name)
+    public function scopeAuthor($query, $name)
     {
         if ($name === null) return $query;
 
         return $query->whereHas('authors', function ($query) use ($name) {
                 $query->where('name', 'LIKE', "%{$name}%");
+            });
+    }
+
+    public function scopePublisher($query, $publisher)
+    {
+        if ($publisher === null) return $query;
+
+        return $query->whereHas('publisher', function ($query) use ($publisher) {
+                $query->where('name', 'LIKE', "%{$publisher}%");
             });
     }
 
