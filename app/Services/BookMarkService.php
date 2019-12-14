@@ -18,11 +18,11 @@ class BookMarkService extends BaseService
     {
         $this->bookmark = $bookmark;
         $this->book = $book;
-        
     }
 
-    public function getAllData(Request $request){
-        
+    public function getAllData(Request $request)
+    {
+
         $status = null;
         $limit = 6;
         $isOwned = null;
@@ -32,26 +32,29 @@ class BookMarkService extends BaseService
         if ($request->has('isOwned')) $isOwned = $request->query('isOwned');
         if ($request->has('isFavorite')) $isFavorite = $request->query('isFavorite');
 
-          return  $this->book->whereHas('checkBookmarked', function ($query)  use ($status, $isOwned, $isFavorite){ 
-             if(!is_null($status)){
-              $query->whereStatus($status);
-                }
-              if(!is_null($isOwned)){
-              $query->whereIsOwned($isOwned);
-              }
-               if(!is_null($isFavorite)){
-              $query->whereIsFavorite($isFavorite);
-              }
-          })->with(['checkBookmarked','userScore','authors', 'bookImagesCover'])->orderBy('created_at', 'asc')->paginate($limit);
+        return  $this->book->whereHas('checkBookmarked', function ($query)  use ($status, $isOwned, $isFavorite) {
+            if (!is_null($status)) {
+                $query->whereStatus($status);
+            }
+            if (!is_null($isOwned)) {
+                $query->whereIsOwned($isOwned);
+            }
+            if (!is_null($isFavorite)) {
+                $query->whereIsFavorite($isFavorite);
+            }
+        })->with(['checkBookmarked', 'userScore', 'authors', 'bookImagesCover'])->orderBy('created_at', 'asc')->paginate($limit);
     }
 
     public function addBookMark(Request $request)
     {
         try {
-            $this->bookmark->updateOrCreate(
-                ['user_id' => User::getAuthId(), 'book_id' => $request->book_id],
-                ['status' => $request->status]
+            $bookmark =  $this->bookmark->firstOrCreate(
+                ['user_id' => User::getAuthId(), 'book_id' => $request->book_id]
             );
+
+            $bookmark->update($request->only(['status', 'is_owned', 'is_favorite']));
+
+            if (!is_null($request->is_favorite)) { }
         } catch (\Throwable $th) {
             return "Bookmark Failed";
         }
