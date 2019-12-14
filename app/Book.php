@@ -6,6 +6,7 @@ use App\Tag;
 use App\User;
 use App\Score;
 use App\Author;
+use App\Review;
 use App\Bookmark;
 use App\BookImage;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +65,14 @@ class Book extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function reviews(){
+         return $this->hasMany(Review::class);
+    }
+
+    public function userReview(){
+         return $this->hasOne(Review::class)->whereUserId(User::getAuthId());
     }
 
     public function scopeSearch($query, $search)
