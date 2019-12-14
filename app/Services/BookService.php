@@ -45,7 +45,7 @@ class BookService extends BaseService
     }
     public function getData($slug)
     {
-        return $this->book->with(['authors:id,name,pen_name', 'tags:id,name', 'checkBookmarked', 'bookImagesCover', 'publisher:id,name', 'userScore'])
+        return $this->book->with(['authors:id,name,pen_name', 'tags:id,name', 'checkBookmarked', 'bookImagesCover', 'publisher:id,name', 'userScore', "userReview.user.imageProfile"])
             ->whereSlug($slug)->first();
     }
     public function addData(Request $request)
