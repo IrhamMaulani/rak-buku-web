@@ -51,7 +51,7 @@ class ReviewService extends BaseService
         $review = $this->review;
         $review->title = $request->title;
         $review->content = $request->content;
-        $review->user_id = $bookId;
+        $review->user_id = $userId;
         $review->book_id = $bookId;
         $review->slug = str_slug($slug, '-');
 
@@ -65,7 +65,7 @@ class ReviewService extends BaseService
     }
 
     public function updateData(Request $request, $id){
-        
+
         try {
             $review = $this->review->findOrFail($id);
             $review->title = $request->title;
