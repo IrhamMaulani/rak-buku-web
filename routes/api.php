@@ -42,6 +42,9 @@ Route::group([
     Route::post('/author', 'AuthorController@store');
     Route::post('/publisher', 'PublisherController@store');
     Route::post('/book', 'BookController@store');
+    Route::post('/review', 'ReviewController@store');
+
+    Route::post('/review/{reviewId}/update', 'ReviewController@update');
 
     Route::put('/user/{userName}/edit', 'ProfileController@update');
 });
