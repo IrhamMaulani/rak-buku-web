@@ -64,6 +64,20 @@ class ReviewService extends BaseService
 
     }
 
+    public function updateData(Request $request, $id){
+        
+        try {
+            $review = $this->review->findOrFail($id);
+            $review->title = $request->title;
+            $review->content = $request->content;
+            $review->save();
+        } catch (\Throwable $th) {
+            return "Failed";
+        }
+
+            return "Success";
+    }
+
     public function syncAllResponse()
     {
         $reviews =  DB::table('reviews')

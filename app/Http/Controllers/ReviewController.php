@@ -76,9 +76,9 @@ class ReviewController extends Controller
      * @param  \App\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request, $id)
     {
-        //
+        return response()->json($this->reviewService->updateData($request, $id));
     }
 
     /**
