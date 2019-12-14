@@ -37,7 +37,7 @@ class ReviewService extends BaseService
         if ($request->has('limit')) $limit = $request->query('limit');
 
         return  $this->setRelationship(['user.imageProfile', 'book:id,title,description,score,slug'])
-            ->setScope('search', $search)->setScope('book', $bookId)->orderBy($orderBy, $order)->getDataPagination($limit);
+            ->setScope('search', $search)->setScope('book', $bookId)->setCondition('user_id', '!=', User::getAuthId())->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
     public function addData(Request $request){
