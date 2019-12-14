@@ -55,6 +55,12 @@ class BaseService
         return $this;
     }
 
+    public function setCondition($condition, $operator = "=" , $value){
+        
+        $this->model = $this->model->where($condition,$operator, $value);
+        return $this;
+    }
+
     public function setScope($scope, $value)
     {
         $this->model = $this->model->$scope($value);
