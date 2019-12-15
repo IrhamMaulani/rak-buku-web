@@ -54,10 +54,23 @@ class BookMarkService extends BaseService
 
             $bookmark->update($request->only(['status', 'is_owned', 'is_favorite']));
 
-            if (!is_null($request->is_favorite)) { }
+            if (!is_null($request->is_favorite)) {
+
+                $this->syncFavorite($request->book_id);
+            }
         } catch (\Throwable $th) {
             return "Bookmark Failed";
         }
         return "BookMark Successfull";
+    }
+
+    public function syncFavorite($bookId)
+    {
+        $bookmarkFavorite = $this->bookmark->whereIsFavorite(1)->whereBookId($bookId)->count();
+
+        $book = $this->book->findOrFail($bookId);
+
+        $book->favorites = $bookmarkFavorite;
+        $book->save();
     }
 }
