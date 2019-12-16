@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Services;
+
 use App\Tag;
 use App\Book;
 use App\User;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class BookService extends BaseService
 {
-    private $book, $score, $tag,$stringHelper;
+    private $book, $score, $tag, $stringHelper;
     public function __construct(Book $book, Score $score, Tag $tag, UploadHelper $uploadHelper, StringHelper $stringHelper)
     {
         $this->book = $book;
@@ -50,26 +52,28 @@ class BookService extends BaseService
     }
     public function addData(Request $request)
     {
-       
+
         try {
             DB::transaction(function () use ($request) {
-                
+
                 $userId = User::getAuthId();
-                $book = new Book(array_merge($request->except(['book_images', 'tags', 'authors']),
-                ['slug' => $this->book->slug($request->title, $request->volume, $request->edition)]));
+                $book = new Book(array_merge(
+                    $request->except(['book_images', 'tags', 'authors']),
+                    ['slug' => $this->book->slug($request->title, $request->volume, $request->edition)]
+                ));
                 $book->save();
                 if ($request->hasFile('book_images')) {
-                        $bookImagesName = $this->uploadHelper->uploadFile(
-                            $request->book_images,
-                            $request->title,
-                            'book_images'
-                        );
-                        $bookImages = [
-                            'name' => $bookImagesName,
-                            'user_id' =>  $userId,
-                            'is_cover' => 1
-                        ];
-                    
+                    $bookImagesName = $this->uploadHelper->uploadFile(
+                        $request->book_images,
+                        $request->title,
+                        'book_images'
+                    );
+                    $bookImages = [
+                        'name' => $bookImagesName,
+                        'user_id' =>  $userId,
+                        'is_cover' => 1
+                    ];
+
                     $book->bookImages()->create($bookImages);
                 }
                 $book->tags()->sync($this->stringHelper->stringToArrayConversion($request->tags, ','));
