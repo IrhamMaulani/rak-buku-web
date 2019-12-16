@@ -46,6 +46,8 @@ Route::group([
 
     Route::post('/review/{reviewId}/update', 'ReviewController@update');
 
+    Route::resource('review-response', 'ReviewResponseController');
+
     Route::put('/user/{userName}/edit', 'ProfileController@update');
 });
 
