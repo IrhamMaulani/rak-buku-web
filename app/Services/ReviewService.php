@@ -32,15 +32,16 @@ class ReviewService extends BaseService
 
         if ($request->has('orderBy')) $orderBy = $request->query('orderBy');
         if ($request->has('search')) $search = $request->query('search');
-        if ($request->has('bookSlug')) $bookId =$this->book->getIdBySlug($request->query('bookSlug'));
+        if ($request->has('bookSlug')) $bookId = $this->book->getIdBySlug($request->query('bookSlug'));
         if ($request->has('order')) $order = $request->query('order');
         if ($request->has('limit')) $limit = $request->query('limit');
 
-        return  $this->setRelationship(['user.imageProfile', 'book:id,title,description,score,slug'])
+        return  $this->setRelationship(['user.imageProfile', 'book:id,title,description,score,slug', 'selfResponse'])
             ->setScope('search', $search)->setScope('book', $bookId)->setCondition('user_id', '!=', User::getAuthId())->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
-    public function addData(Request $request){
+    public function addData(Request $request)
+    {
         $bookId = $this->book->getIdBySlug($request->slug);
 
         $userId = $this->user->getAuthId();
@@ -48,23 +49,23 @@ class ReviewService extends BaseService
         $slug = $request->title . ' ' . ' ' . $bookId . ' ' . $userId;
 
         try {
-        $review = $this->review;
-        $review->title = $request->title;
-        $review->content = $request->content;
-        $review->user_id = $userId;
-        $review->book_id = $bookId;
-        $review->slug = str_slug($slug, '-');
+            $review = $this->review;
+            $review->title = $request->title;
+            $review->content = $request->content;
+            $review->user_id = $userId;
+            $review->book_id = $bookId;
+            $review->slug = str_slug($slug, '-');
 
-        $review->save();
+            $review->save();
         } catch (\Throwable $th) {
             return "Failed";
         }
 
         return "Success";
-
     }
 
-    public function updateData(Request $request, $id){
+    public function updateData(Request $request, $id)
+    {
 
         try {
             $review = $this->review->findOrFail($id);
@@ -75,7 +76,7 @@ class ReviewService extends BaseService
             return "Failed";
         }
 
-            return "Success";
+        return "Success";
     }
 
     public function syncAllResponse()
