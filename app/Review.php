@@ -26,6 +26,11 @@ class Review extends Model
         return $this->hasMany(ReviewResponse::class);
     }
 
+    public function selfResponse()
+    {
+        return $this->hasOne(ReviewResponse::class)->whereUserId(User::getAuthId());
+    }
+
     public function scopeSearch($query, $search)
     {
         if ($search === null) return $query;
@@ -38,9 +43,10 @@ class Review extends Model
             });
     }
 
-    public function scopeBook($query, $bookId){
-         if ($bookId === null) return $query;
+    public function scopeBook($query, $bookId)
+    {
+        if ($bookId === null) return $query;
 
-         return $query->whereBookId($bookId);
+        return $query->whereBookId($bookId);
     }
 }
