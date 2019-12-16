@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\ReviewResponse;
+use App\Services\ReviewResponseService;
 use Illuminate\Http\Request;
 
 class ReviewResponseController extends Controller
 {
+    private $reviewResponseService;
+
+    public function __construct(ReviewResponseService $reviewResponseService)
+    {
+        $this->reviewResponseService = $reviewResponseService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +42,7 @@ class ReviewResponseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json($this->reviewResponseService->addLike($request));
     }
 
     /**
@@ -44,7 +51,7 @@ class ReviewResponseController extends Controller
      * @param  \App\ReviewResponse  $reviewResponse
      * @return \Illuminate\Http\Response
      */
-    public function show(ReviewResponse $reviewResponse)
+    public function show()
     {
         //
     }
@@ -55,7 +62,7 @@ class ReviewResponseController extends Controller
      * @param  \App\ReviewResponse  $reviewResponse
      * @return \Illuminate\Http\Response
      */
-    public function edit(ReviewResponse $reviewResponse)
+    public function edit()
     {
         //
     }
@@ -67,7 +74,7 @@ class ReviewResponseController extends Controller
      * @param  \App\ReviewResponse  $reviewResponse
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ReviewResponse $reviewResponse)
+    public function update(Request $request)
     {
         //
     }
@@ -78,7 +85,7 @@ class ReviewResponseController extends Controller
      * @param  \App\ReviewResponse  $reviewResponse
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ReviewResponse $reviewResponse)
+    public function destroy()
     {
         //
     }
