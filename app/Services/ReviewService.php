@@ -25,7 +25,7 @@ class ReviewService extends BaseService
     public function getAllData(Request $request)
     {
         $search = null;
-        $bookId = null;
+        $bookSlug = null;
         $orderBy = null;
         $order = null;
         $limit = 5;
@@ -34,7 +34,7 @@ class ReviewService extends BaseService
 
         if ($request->has('orderBy')) $orderBy = $request->query('orderBy');
         if ($request->has('search')) $search = $request->query('search');
-        if ($request->has('bookSlug')) $bookId = $this->book->getIdBySlug($request->query('bookSlug'));
+        if ($request->has('bookSlug')) $bookSlug = $request->query('bookSlug');
         if ($request->has('order')) $order = $request->query('order');
         if ($request->has('limit')) $limit = $request->query('limit');
         if ($request->has('slug')) $slug = $request->query('slug');
@@ -42,7 +42,7 @@ class ReviewService extends BaseService
 
 
         return  $this->setRelationship(['user.imageProfile', 'book:id,title,description,score,slug', 'selfResponse'])
-            ->setScope('search', $search)->setScope('slug', $slug)->setScope('book', $bookId)->setScope('isUserIncluded', $userIncluded)->orderBy($orderBy, $order)->getDataPagination($limit);
+            ->setScope('search', $search)->setScope('slug', $slug)->setScope('book', $bookSlug)->setScope('isUserIncluded', $userIncluded)->orderBy($orderBy, $order)->getDataPagination($limit);
     }
 
     public function addData(Request $request)
