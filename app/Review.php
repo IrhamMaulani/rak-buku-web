@@ -43,10 +43,24 @@ class Review extends Model
             });
     }
 
+    public function scopeSlug($query, $slug)
+    {
+        if ($slug === null) return $query;
+
+        return $query->whereSlug($slug);
+    }
+
     public function scopeBook($query, $bookId)
     {
         if ($bookId === null) return $query;
 
         return $query->whereBookId($bookId);
+    }
+
+    public function scopeIsUserIncluded($query, $isIncluded)
+    {
+        if ($isIncluded !== '1') return $query;
+
+        return $query->where('user_id', '!=', User::getAuthId());
     }
 }
