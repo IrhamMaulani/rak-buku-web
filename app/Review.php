@@ -50,9 +50,12 @@ class Review extends Model
         return $query->whereSlug($slug);
     }
 
-    public function scopeBook($query, $bookId)
+    public function scopeBook($query, $bookSlug)
     {
-        if ($bookId === null) return $query;
+        if ($bookSlug === null) return $query;
+
+        $bookId = new Book;
+        $bookId = $bookId->getIdBySlug($bookSlug);
 
         return $query->whereBookId($bookId);
     }
