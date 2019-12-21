@@ -49,6 +49,8 @@ Route::group([
     Route::resource('review-response', 'ReviewResponseController');
 
     Route::put('/user/{userName}/edit', 'ProfileController@update');
+
+    Route::get('/user-review', 'UserReviewController@index');
 });
 
 Route::get('/book', 'BookController@index');
