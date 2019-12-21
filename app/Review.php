@@ -62,7 +62,7 @@ class Review extends Model
 
     public function scopeIsUserIncluded($query, $isIncluded)
     {
-        if ($isIncluded !== '1') return $query;
+        if ($isIncluded !== '0') return $query;
 
         return $query->where('user_id', '!=', User::getAuthId());
     }
