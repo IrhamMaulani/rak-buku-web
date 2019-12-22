@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use App\Http\Resources\RoleItem;
 use App\Http\Resources\ReputationItem;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -25,6 +26,7 @@ class UserItem extends JsonResource
             'role_name' => $this->whenPivotLoaded('role_user', function () {
                 return $this->pivot->name;
             }),
+            'is_ban' => $this->is_ban,
         ];
     }
 }
