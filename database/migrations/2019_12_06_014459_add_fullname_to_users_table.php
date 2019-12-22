@@ -15,7 +15,7 @@ class AddFullnameToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('full_name');
-            $table->integer('is_ban')->default(1);
+            $table->integer('is_ban')->default(0);
         });
     }
 
