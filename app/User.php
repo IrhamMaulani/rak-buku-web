@@ -60,8 +60,14 @@ class User extends Authenticatable
         return auth('api')->user() != null ? auth('api')->user()->id : null;
     }
 
-    public function imageProfile(){
+    public function imageProfile()
+    {
         return $this->hasOne(UserImage::class)->whereIsUse(1);
+    }
+
+    public function isBan($userId)
+    {
+        return $this->findOrFail($userId)->is_ban === 1 ? true : false;
     }
 
 
