@@ -27,6 +27,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('reputation', 'ReputationController');
 
     Route::resource('book', 'BookController');
+    Route::resource('tag', 'TagController');
 
     Route::put('/user/{userId}/ban', 'UserBanController@update');
 });
