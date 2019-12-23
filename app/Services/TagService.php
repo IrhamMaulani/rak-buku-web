@@ -20,4 +20,51 @@ class TagService extends BaseService
     {
         return $this->setValue(['id', 'name'])->getAllDatas();
     }
+
+    public function storeData(Request $request)
+    {
+        try {
+            $tag = $this->tag;
+
+            $tag->name = $request->name;
+
+            $tag->save();
+        } catch (\Throwable $th) {
+            return "Fail";
+        }
+        return "Success";
+    }
+
+    public function updateData(Request $request, $tagId)
+    {
+        try {
+            $tag = $this->tag->findOrfail($tagId);
+
+            $tag->name = $request->name;
+
+            $tag->save();
+        } catch (\Throwable $th) {
+            return "Fail";
+        }
+        return "Success";
+    }
+
+    public function getData($tagId)
+    {
+        try {
+            return $this->tag->findOrFail($tagId);
+        } catch (\Throwable $th) {
+            return "Data Tidak Ditemukan";
+        }
+    }
+
+    public function deleteData($tagId)
+    {
+        try {
+            $this->tag->destroy($tagId);
+        } catch (\Throwable $th) {
+            return "Fail";
+        }
+        return "Success";
+    }
 }
