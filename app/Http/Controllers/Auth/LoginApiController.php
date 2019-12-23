@@ -17,6 +17,13 @@ class LoginApiController extends Controller
 {
     private $successStatus = 200;
 
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function login(Request $request)
     {
         $this->validateLogin($request);
@@ -31,6 +38,12 @@ class LoginApiController extends Controller
         }
 
         $user = $request->user();
+
+        if ($user->isBan($user->id)) {
+            return response()->json([
+                'message' => 'Your Account Is Banned. Contact Admin To Open Your Account Again. Thank You'
+            ], 401);
+        }
 
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -67,36 +80,36 @@ class LoginApiController extends Controller
             'password' => 'required|string',
         ]);
     }
-     public function changePassword(Request $request)
+    public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-        'old_password'=> 'required',
-         'password' => 'required|min:6',
-        'confirm_password' => 'required|same:password',
-    ]);
+            'old_password' => 'required',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
+        ]);
         if ($validator->fails()) {
             return response()->json([
-            'message' => 'Failed Change Password',
-            'error' => $validator->errors()
-        ], 422);
+                'message' => 'Failed Change Password',
+                'error' => $validator->errors()
+            ], 422);
         }
         $userId = User::getAuthId();
         $user = User::findOrFail($userId);
         if (!Hash::check($request->old_password, $user->password)) {
             return response()->json([
-            'message' => 'Password Lama Salah'
+                'message' => 'Password Lama Salah'
             ], 422);
         }
         $user->password = $request->password;
         $user->save();
         if ($user) {
             return response()->json([
-            'message' => 'Password Sukses Di Ubah'
-        ]);
+                'message' => 'Password Sukses Di Ubah'
+            ]);
         } else {
             return response()->json([
-            'message' => 'Terjadi Kesalahan. Coba Lagi'
-        ]);
+                'message' => 'Terjadi Kesalahan. Coba Lagi'
+            ]);
         }
     }
 }
