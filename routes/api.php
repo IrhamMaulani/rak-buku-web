@@ -19,22 +19,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-Route::prefix('admin')->group(function () {
+Route::group(
+    ['prefix' => 'admin', 'middleware' => ['auth:api', 'role:moderator']],
+    function () {
 
-    // 
-    Route::resource('user', 'UserController');
-    Route::resource('role', 'RoleController');
-    Route::resource('reputation', 'ReputationController');
+        Route::resource('user', 'UserController');
+        Route::resource('role', 'RoleController');
+        Route::resource('reputation', 'ReputationController');
 
-    Route::resource('book', 'BookAdminController');
-    Route::resource('tag', 'TagController');
-    Route::resource('publisher', 'PublisherController');
-    Route::resource('author', 'AuthorController');
+        Route::resource('book', 'BookAdminController');
+        Route::resource('tag', 'TagController');
+        Route::resource('publisher', 'PublisherController');
+        Route::resource('author', 'AuthorController');
 
-    Route::put('/user/{userId}/ban', 'UserBanController@update');
+        Route::put('/user/{userId}/ban', 'UserBanController@update');
 
-    Route::get('/home', 'AdminHomeController@index');
-});
+        Route::get('/home', 'AdminHomeController@index');
+    }
+);
 
 Route::get('/check-admin', 'Auth\CheckRoleController@checkAdmin');
 
