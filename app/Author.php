@@ -60,6 +60,6 @@ class Author extends Model
             'author_social_media',
             'author_id',
             'social_media_id'
-        );
+        )->withPivot('url');
     }
 }
