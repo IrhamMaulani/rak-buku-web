@@ -106,14 +106,13 @@ class AuthorService extends BaseService
                         'user_id' =>   User::getAuthId(),
                     ];
 
-                    if ($author->authorImage->name) {
+                    if ($author->authorImage) {
                         $this->uploadHelper->deleteFile($author->authorImage->name);
                     }
-                    $authorImage = AuthorImage::whereAuthorId($author->id)->first();
-
-                    $authorImage->name = $authorImagesName;
-
-                    $authorImage->save();
+                    AuthorImage::updateOrCreate(
+                        ['author_id' => $author->id, 'user_id' => User::getAuthId()],
+                        ['name' => $authorImagesName]
+                    );
                 }
                 foreach ($this->socialMedia->convertToInsertData($request->social_medias) as $socialMedia) {
 
@@ -125,6 +124,7 @@ class AuthorService extends BaseService
                 }
             });
         } catch (\Throwable $th) {
+            return $th;
             return 'Failed';
         }
         return "Success";
