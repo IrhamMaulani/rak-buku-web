@@ -81,6 +81,16 @@ class User extends Authenticatable
         return false;
     }
 
+    public function checkAdmin($userId)
+    {
+        $user = $this->findOrFail($userId);
+
+        foreach ($user->roles as $role) {
+            if ($role->name === 'moderator') return true;
+        }
+        return false;
+    }
+
     /**
      * @deprecated
      * 
