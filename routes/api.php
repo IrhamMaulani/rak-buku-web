@@ -33,11 +33,7 @@ Route::prefix('admin')->group(function () {
 
     Route::put('/user/{userId}/ban', 'UserBanController@update');
 
-    // Route::group([
-    //     'middleware' => 'auth:api',
-    // ], function () {
-    //     Route::get('/check-admin', 'Auth\CheckRoleController@checkAdmin');
-    // });
+    Route::get('/home', 'AdminHomeController@index');
 });
 
 Route::get('/check-admin', 'Auth\CheckRoleController@checkAdmin');
