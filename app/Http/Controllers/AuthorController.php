@@ -74,9 +74,10 @@ class AuthorController extends Controller
      * @param  \App\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request, $authorId)
     {
-        //
+
+        return response()->json($this->authorService->updateData($request, $authorId));
     }
 
     /**
