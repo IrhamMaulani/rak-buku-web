@@ -54,7 +54,7 @@ class TagService extends BaseService
         try {
             return $this->tag->findOrFail($tagId);
         } catch (\Throwable $th) {
-            return "Data Tidak Ditemukan";
+            return "Can't Find Data";
         }
     }
 
