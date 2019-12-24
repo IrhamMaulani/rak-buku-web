@@ -76,7 +76,7 @@ class User extends Authenticatable
         // $roles = explode("&", $roleNames);
 
         foreach ($this->roles as $role) {
-            if ($role->role_name === $roleName) return true;
+            if ($role->name === $roleName) return true;
         }
         return false;
     }
