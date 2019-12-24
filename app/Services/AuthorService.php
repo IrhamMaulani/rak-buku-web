@@ -129,4 +129,14 @@ class AuthorService extends BaseService
         }
         return "Success";
     }
+
+    public function deleteData($authorId)
+    {
+        try {
+            $this->author->destroy($authorId);
+        } catch (\Throwable $th) {
+            return "Fail";
+        }
+        return "Success";
+    }
 }

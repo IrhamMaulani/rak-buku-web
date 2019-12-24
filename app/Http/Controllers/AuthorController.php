@@ -86,8 +86,8 @@ class AuthorController extends Controller
      * @param  \App\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Author $author)
+    public function destroy($authorId)
     {
-        //
+        return response()->json($this->authorService->deleteData($authorId));
     }
 }
