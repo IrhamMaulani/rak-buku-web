@@ -24,6 +24,10 @@ class CheckRoleController extends Controller
 
     public function checkAdmin(Request $request)
     {
-        return response()->json(['admin' => $request->user()->hasRole("moderator")]);
+        if (User::getAuthId() === null) {
+            return response()->json(false);
+        }
+
+        return response()->json(['admin' => $this->user->checkAdmin(User::getAuthId())]);
     }
 }
