@@ -26,7 +26,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('role', 'RoleController');
     Route::resource('reputation', 'ReputationController');
 
-    Route::resource('book', 'BookController');
+    Route::resource('book', 'BookAdminController');
     Route::resource('tag', 'TagController');
     Route::resource('publisher', 'PublisherController');
     Route::resource('author', 'AuthorController');
