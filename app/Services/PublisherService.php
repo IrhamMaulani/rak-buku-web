@@ -28,17 +28,47 @@ class PublisherService extends BaseService
         if ($request->has('search')) $search = $request->query('search');
         if ($request->has('order')) $order = $request->query('order');
 
-        return  $this->setScope('search', $search)->setValue(['id', 'name'])
+        return  $this->setScope('search', $search)->setValue(['id', 'name', 'address', 'city', 'country'])
             ->orderBy($orderBy, $order)->getAllDatas();
     }
 
     public function addData(Request $request)
     {
-       try {
+        try {
             $this->publisher->create($request->all());
-            
         } catch (\Exception $e) {
-               return 'Failed';
+            return 'Failed';
+        }
+        return "Success";
+    }
+
+    public function updateData(Request $request, $publisherId)
+    {
+        try {
+            $publisher = $this->publisher->findOrFail($publisherId);
+
+            $publisher->update($request->all());
+        } catch (\Throwable $th) {
+            return 'Failed';
+        }
+        return "Success";
+    }
+
+    public function getData($publisherId)
+    {
+        try {
+            return $this->publisher->findOrFail($publisherId);
+        } catch (\Throwable $th) {
+            return "Can't Find Data";
+        }
+    }
+
+    public function deleteData($publisherId)
+    {
+        try {
+            $this->publisher->destroy($publisherId);
+        } catch (\Throwable $th) {
+            return "Fail";
         }
         return "Success";
     }

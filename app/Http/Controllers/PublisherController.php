@@ -26,16 +26,6 @@ class PublisherController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,21 +42,11 @@ class PublisherController extends Controller
      * @param  \App\Publisher  $publisher
      * @return \Illuminate\Http\Response
      */
-    public function show(Publisher $publisher)
+    public function show($publisherId)
     {
-        //
+        return response()->json($this->publisherService->getData($publisherId));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Publisher  $publisher
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Publisher $publisher)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -75,9 +55,9 @@ class PublisherController extends Controller
      * @param  \App\Publisher  $publisher
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Publisher $publisher)
+    public function update(Request $request,  $publisherId)
     {
-        //
+        return response()->json($this->publisherService->updateData($request, $publisherId));
     }
 
     /**
@@ -86,8 +66,8 @@ class PublisherController extends Controller
      * @param  \App\Publisher  $publisher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Publisher $publisher)
+    public function destroy($publisherId)
     {
-        //
+        return response()->json($this->publisherService->deleteData($publisherId));
     }
 }
