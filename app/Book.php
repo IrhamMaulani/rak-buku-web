@@ -67,12 +67,14 @@ class Book extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function reviews(){
-         return $this->hasMany(Review::class);
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
-    public function userReview(){
-         return $this->hasOne(Review::class)->whereUserId(User::getAuthId());
+    public function userReview()
+    {
+        return $this->hasOne(Review::class)->whereUserId(User::getAuthId());
     }
 
     public function scopeSearch($query, $search)
@@ -80,7 +82,6 @@ class Book extends Model
         if ($search === null) return $query;
         return $query
             ->where("title", "LIKE", "%{$search}%");
-            
     }
 
     public function scopeTag($query, $tag)
@@ -97,8 +98,8 @@ class Book extends Model
         if ($name === null) return $query;
 
         return $query->whereHas('authors', function ($query) use ($name) {
-                $query->where('name', 'LIKE', "%{$name}%");
-            });
+            $query->where('name', 'LIKE', "%{$name}%");
+        });
     }
 
     public function scopePublisher($query, $publisher)
@@ -106,8 +107,8 @@ class Book extends Model
         if ($publisher === null) return $query;
 
         return $query->whereHas('publisher', function ($query) use ($publisher) {
-                $query->where('name', 'LIKE', "%{$publisher}%");
-            });
+            $query->where('name', 'LIKE', "%{$publisher}%");
+        });
     }
 
     public function scopeIsBookMarked($query, $userId)
@@ -117,13 +118,24 @@ class Book extends Model
         });
     }
 
-    public static function slug($title, $volume, $edition){
-        
+    public static function slug($title, $volume, $edition)
+    {
+
         $slug = $title . ' ' . $volume . ' ' . $edition;
         return str_slug($slug, '-');
     }
 
-    public function getIdBySlug($slug){
+    public function getIdBySlug($slug)
+    {
         return $this->whereSlug($slug)->first()->id;
+    }
+
+    public static function getIdForSync($arrays)
+    {
+        $ids = [];
+        foreach ($arrays as $array) {
+            $ids[] = $array->id;
+        }
+        return $ids;
     }
 }
