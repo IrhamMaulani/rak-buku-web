@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    return response()->json(asset('storage/book_images' .'dadadsss_1575471214_5de7c86e8e683'));
 });
 
 
