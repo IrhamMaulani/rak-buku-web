@@ -35,39 +35,46 @@ class AuthorService extends BaseService
         if ($request->has('search')) $search = $request->query('search');
         if ($request->has('order')) $order = $request->query('order');
 
-        return  $this->setScope('search', $search)->setValue(['id', 'name', 'pen_name'])
+        return  $this->setScope('search', $search)
+            ->setValue(['id', 'name', 'pen_name', 'birth_place', 'birth_date', 'residence_place', 'user_id'])
+            ->setRelationship(['user:id,name', 'authorImage'])
             ->orderBy($orderBy, $order)->getAllDatas();
     }
 
-    public function addData(Request $request){
-        
-         try {
+    public function addData(Request $request)
+    {
+
+        try {
             DB::transaction(function () use ($request) {
                 $userId = User::getAuthId();
-                 $author = new Author(array_merge($request->except(['social_medias', 'author_images']),
-                ['slug' => $this->author->slug($request->name), 'user_id' => $userId]));
+                $author = new Author(array_merge(
+                    $request->except(['social_medias', 'author_images']),
+                    ['slug' => $this->author->slug($request->name), 'user_id' => $userId]
+                ));
                 $author->save();
                 if ($request->hasFile('author_images')) {
-                        $authorImagesName = $this->uploadHelper->uploadFile(
-                            $request->author_images,
-                            $request->name,
-                            'author_images'
-                        );
-                        $authorImages = [
-                            'name' => $authorImagesName,
-                            'user_id' =>  $userId,
-                        ];
+                    $authorImagesName = $this->uploadHelper->uploadFile(
+                        $request->author_images,
+                        $request->name,
+                        'author_images'
+                    );
+                    $authorImages = [
+                        'name' => $authorImagesName,
+                        'user_id' =>  $userId,
+                    ];
+
                     $author->authorImage()->create($authorImages);
                 }
                 foreach ($this->socialMedia->convertToInsertData($request->social_medias) as $socialMedia) {
                     DB::table('author_social_media')->insert(
-                    ['author_id' => $author->id, 
-                    'social_media_id' => $socialMedia['id'],
-                     'url' => $socialMedia['url']
-                     ]);
+                        [
+                            'author_id' => $author->id,
+                            'social_media_id' => $socialMedia['id'],
+                            'url' => $socialMedia['url']
+                        ]
+                    );
                 }
-                
-            }); 
+            });
         } catch (\Throwable $th) {
             return $th;
             return 'Failed';
