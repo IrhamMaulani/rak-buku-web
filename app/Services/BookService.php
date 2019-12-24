@@ -154,4 +154,14 @@ class BookService extends BaseService
         }
         return "Success";
     }
+
+    public function deleteData($bookId)
+    {
+        try {
+            $this->book->destroy($bookId);
+        } catch (\Throwable $th) {
+            return "Fail";
+        }
+        return "Success";
+    }
 }
