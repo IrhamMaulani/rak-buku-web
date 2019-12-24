@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Tag;
 use App\Book;
+use App\BookImage;
 use App\User;
 use App\Score;
 use Illuminate\Http\Request;
@@ -82,7 +83,7 @@ class BookService extends BaseService
 
                 $userId = User::getAuthId();
                 $book = new Book(array_merge(
-                    $request->except(['book_images', 'tags', 'authors']),
+                    $request->except(['book_images', 'tags', 'authors', 'book_images_cover', 'publisher', 'tags_json', 'authors_json']),
                     ['slug' => $this->book->slug($request->title, $request->volume, $request->edition)]
                 ));
                 $book->save();
@@ -100,8 +101,52 @@ class BookService extends BaseService
 
                     $book->bookImages()->create($bookImages);
                 }
-                $book->tags()->sync($this->stringHelper->stringToArrayConversion($request->tags, ','));
-                $book->authors()->sync($this->stringHelper->stringToArrayConversion($request->authors, ','));
+                $book->tags()->sync($this->book->getIdForSync(json_decode($request->tags_json)));
+                $book->authors()->sync($this->book->getIdForSync(json_decode($request->authors_json)));
+            });
+        } catch (\Throwable $th) {
+            return $th;
+            return 'Failed';
+        }
+        return "Success";
+    }
+
+    public function updateData(Request $request, $bookId)
+    {
+        try {
+            DB::transaction(function () use ($request, $bookId) {
+                $book = $this->book->findOrFail($bookId);
+
+                $book->title = $request->title;
+                $book->volume = $request->volume;
+                $book->edition = $request->edition;
+                $book->print_year = $request->print_year;
+                $book->origin_language = $request->origin_language;
+                $book->description = $request->description;
+                $book->publisher_id = $request->publisher_id;
+
+                $book->save();
+
+                if ($request->hasFile('book_images')) {
+                    $bookImagesName = $this->uploadHelper->uploadFile(
+                        $request->book_images,
+                        $request->title,
+                        'book_images'
+                    );
+                    $bookImages = [
+                        'name' => $bookImagesName,
+                        'user_id' =>  User::getAuthId(),
+                        'is_cover' => 1
+                    ];
+
+                    $bookImage = BookImage::whereBookId($book->id)->whereIsCover(1)->latest()->first();
+                    $bookImage->is_cover = 0;
+                    $bookImage->save();
+
+                    $book->bookImages()->create($bookImages);
+                }
+                $book->tags()->sync($this->book->getIdForSync(json_decode($request->tags_json)));
+                $book->authors()->sync($this->book->getIdForSync(json_decode($request->authors_json)));
             });
         } catch (\Throwable $th) {
             return $th;
