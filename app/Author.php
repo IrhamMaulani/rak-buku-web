@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Book;
+use App\User;
 use App\AuthorImage;
 use App\SocialMedia;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Author extends Model
 {
     protected $hidden = array('pivot');
-     protected $guarded = ['id'];
+    protected $guarded = ['id'];
 
     /**
      * @deprecated
@@ -31,28 +32,34 @@ class Author extends Model
         return $this->belongsToMany(Book::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function scopeSearch($query, $search)
     {
         if ($search === null) return $query;
         return $query->where("name", "LIKE", "%{$search}%")->orWhere('pen_name', "LIKE", "%{$search}%");
     }
-     public static function slug($name){
-        
+    public static function slug($name)
+    {
+
         return str_slug($name, '-');
     }
 
-    public function authorImage(){
+    public function authorImage()
+    {
         return $this->hasOne(AuthorImage::class);
     }
 
     public function socialMedias()
     {
-          return $this->belongsToMany(
+        return $this->belongsToMany(
             SocialMedia::class,
             'author_social_media',
             'author_id',
             'social_media_id'
         );
     }
-
 }
