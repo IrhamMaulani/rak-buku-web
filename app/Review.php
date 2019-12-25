@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     protected $guarded = ['id'];
+    protected $appends = ['content_length'];
 
     public function user()
     {
@@ -65,5 +66,10 @@ class Review extends Model
         if ($isIncluded !== '0') return $query;
 
         return $query->where('user_id', '!=', User::getAuthId());
+    }
+
+    public function getContentLengthAttribute()
+    {
+        return 50;
     }
 }
