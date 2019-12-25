@@ -34,6 +34,7 @@ class ReviewResponseService extends BaseService
             }
         } catch (\Throwable $th) {
             return $th;
+            return "Failed";
         }
         return "Successfull";
     }
