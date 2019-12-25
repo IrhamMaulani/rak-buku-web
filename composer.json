@@ -16,7 +16,7 @@
         "laravel/passport": "^7.5",
         "laravel/tinker": "^1.0",
         "spatie/laravel-sluggable": "^2.1",
-        "fzaninotto/faker": "^1.4",
+        "fzaninotto/faker": "^1.4"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
