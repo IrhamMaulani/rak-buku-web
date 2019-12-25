@@ -39,6 +39,5 @@ For more Detailed Check syncAllScore function in ScoreService file
 -   Run php artisan migrate
 -   Run php artisan storage:link
 -   Run php artisan passport:install
--   Run php artisan passport:keys
 
 Now you've done install Server-Side, Now for use you Need To go Client-Side and Install The Front-end [Rak-Buku-Vue](https://github.com/IrhamMaulani/rak-buku-vue).
