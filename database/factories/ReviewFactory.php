@@ -15,6 +15,8 @@ $factory->define(Review::class, function (Faker $faker) {
         'content' => $faker->realText(45),
         'user_id' => $faker->randomElement($userId),
         'book_id' => $faker->randomElement($bookId),
-        'slug' => str_slug($slug, '-')
+        'slug' => str_slug($slug, '-'),
+        'likes' => 0,
+        'dislikes' => 0
     ];
 });
