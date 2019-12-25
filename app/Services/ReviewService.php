@@ -95,13 +95,7 @@ class ReviewService extends BaseService
                 as likes"),
                 DB::raw("(SELECT COUNT(review_responses.is_like) FROM review_responses WHERE
                 review_responses.review_id = reviews.id AND review_responses.is_like = 0 )
-                as dislikes"),
-                DB::raw("(SELECT COUNT(review_responses.is_helpful) FROM review_responses WHERE
-                review_responses.review_id = reviews.id AND review_responses.is_helpful = 1 )
-                as helpful"),
-                DB::raw("(SELECT COUNT(review_responses.is_helpful) FROM review_responses WHERE
-                review_responses.review_id = reviews.id AND review_responses.is_helpful = 0 )
-                as not_helpful")
+                as dislikes")
             )
             ->groupBy('reviews.id')
             ->get();
@@ -114,9 +108,7 @@ class ReviewService extends BaseService
 
                 $reviewUpdate->dislikes = $review->dislikes;
 
-                $reviewUpdate->helpful = $review->helpful;
 
-                $reviewUpdate->not_helpful = $review->not_helpful;
 
                 $reviewUpdate->save();
             }
