@@ -20,5 +20,7 @@ $factory->define(Book::class, function (Faker $faker) {
         'origin_language' =>  $faker->country,
         'publisher_id'    => $faker->randomElement($publisherId),
         'slug' => str_slug($slug, '-'),
+        'favorites' => 0,
+        'score' => 0
     ];
 });
