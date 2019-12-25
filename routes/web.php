@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return response()->json(asset('storage/book_images' .'dadadsss_1575471214_5de7c86e8e683'));
+    return Redirect::to('https://rak-buku-240414.firebaseapp.com/');
 });
 
 
