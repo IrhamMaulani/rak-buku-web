@@ -44,7 +44,6 @@ class AuthorService extends BaseService
 
     public function addData(Request $request)
     {
-
         try {
             DB::transaction(function () use ($request) {
                 $userId = User::getAuthId();

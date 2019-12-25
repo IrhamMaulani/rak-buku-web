@@ -2,20 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Score;
-use App\Services\ScoreService;
+use App\SocialMedia;
 use Illuminate\Http\Request;
 
-class ScoreController extends Controller
+class SocialMediaController extends Controller
 {
-
-    private $scoreService;
-
-    public function __construct(ScoreService $scoreService)
-    {
-        $this->scoreService = $scoreService;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +14,7 @@ class ScoreController extends Controller
      */
     public function index()
     {
-       return response()->json($this->scoreService->syncAllScore());
+        //
     }
 
     /**
@@ -44,16 +35,16 @@ class ScoreController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json($this->scoreService->addScore($request));
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Score  $score
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function show(Score $score)
+    public function show(SocialMedia $socialMedia)
     {
         //
     }
@@ -61,10 +52,10 @@ class ScoreController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Score  $score
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function edit(Score $score)
+    public function edit(SocialMedia $socialMedia)
     {
         //
     }
@@ -73,10 +64,10 @@ class ScoreController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Score  $score
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Score $score)
+    public function update(Request $request, SocialMedia $socialMedia)
     {
         //
     }
@@ -84,10 +75,10 @@ class ScoreController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Score  $score
+     * @param  \App\SocialMedia  $socialMedia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Score $score)
+    public function destroy(SocialMedia $socialMedia)
     {
         //
     }
