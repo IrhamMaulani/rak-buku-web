@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(ReputationsTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+
         $this->call(PublishersTableSeeder::class);
         $this->call(AuthorsTableSeeder::class);
         $this->call(TagsTableSeeder::class);
@@ -25,9 +26,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AuthorBookTableSeeder::class);
         $this->call(BookTagTableSeeder::class);
-        $this->call(RoleUserTablerSeeder::class);
+        // $this->call(RoleUserTablerSeeder::class);
 
-        factory(App\User::class, 35)->create();
+        // factory(App\User::class, 35)->create();
 
         factory(App\Score::class, 100)->create();
 

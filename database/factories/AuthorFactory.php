@@ -17,6 +17,6 @@ $factory->define(Author::class, function (Faker $faker) {
         'birth_place' => $faker->country, // secret
         'birth_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
         'residence_place' =>  $faker->country,
-        'user_id'    => $faker->unique()->randomElement($userId),
+        'user_id'    => $faker->randomElement($userId),
     ];
 });
