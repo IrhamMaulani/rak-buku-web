@@ -81,7 +81,7 @@ class Book extends Model
     {
         if ($search === null) return $query;
         return $query
-            ->where("title", "LIKE", "%{$search}%");
+            ->where("title", "ilike", "%%{$search}%%");
     }
 
     public function scopeTag($query, $tag)
