@@ -76,6 +76,7 @@ class AuthorService extends BaseService
                 }
             });
         } catch (\Throwable $th) {
+            return $th;
             return 'Failed';
         }
         return "Success";
