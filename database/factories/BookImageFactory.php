@@ -11,7 +11,7 @@ $factory->define(BookImage::class, function (Faker $faker) {
     $userId = App\User::pluck('id')->toArray();
 
     return [
-        'name' => $faker->imageUrl($width = 640, $height = 480),
+        'name' => null,
         'book_id' => $faker->randomElement($bookId),
         'user_id' => $faker->randomElement($userId),
         'is_cover' => $faker->numberBetween(0, 1)

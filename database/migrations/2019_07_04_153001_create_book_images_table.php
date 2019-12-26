@@ -14,7 +14,7 @@ class CreateBookImagesTable extends Migration
     public function up()
     {
         Schema::create('book_images', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->nullable();
             $table->string('name');
             $table->unsignedInteger('book_id');
             $table->unsignedInteger('user_id');

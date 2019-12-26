@@ -15,7 +15,7 @@ class CreateUserImagesTable extends Migration
     {
         Schema::create('user_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->nullable();
             $table->tinyInteger('is_use');
             $table->unsignedInteger('user_id');
             $table->timestamps();

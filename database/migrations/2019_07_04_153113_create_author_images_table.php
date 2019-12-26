@@ -15,7 +15,7 @@ class CreateAuthorImagesTable extends Migration
     {
         Schema::create('author_images', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->nullable();
             $table->unsignedInteger('user_id');
             $table->timestamps();
 
