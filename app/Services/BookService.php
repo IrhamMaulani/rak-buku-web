@@ -140,8 +140,10 @@ class BookService extends BaseService
                     ];
 
                     $bookImage = BookImage::whereBookId($book->id)->whereIsCover(1)->latest()->first();
-                    $bookImage->is_cover = 0;
-                    $bookImage->save();
+                    if ($bookImage) {
+                        $bookImage->is_cover = 0;
+                        $bookImage->save();
+                    }
 
                     $book->bookImages()->create($bookImages);
                 }
