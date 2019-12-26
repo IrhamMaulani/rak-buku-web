@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(AuthorsTableSeeder::class);
         $this->call(TagsTableSeeder::class);
         $this->call(BooksTableSeeder::class);
-        $this->call(UserImagesTableSeeder::class);
-        $this->call(BookImagesTableSeeder::class);
-        $this->call(AuthorImagesTableSeeder::class);
+        // $this->call(UserImagesTableSeeder::class);
+        // $this->call(BookImagesTableSeeder::class);
+        // $this->call(AuthorImagesTableSeeder::class);
         // $this->call(ScoresTableSeeder::class);
 
         $this->call(AuthorBookTableSeeder::class);
@@ -30,11 +30,11 @@ class DatabaseSeeder extends Seeder
 
         // factory(App\User::class, 35)->create();
 
-        factory(App\Score::class, 100)->create();
+        // factory(App\Score::class, 100)->create();
 
         factory(App\Review::class, 35)->create();
 
-        factory(App\ReviewResponse::class, 35)->create();
+        // factory(App\ReviewResponse::class, 35)->create();
 
         $this->call(SocialMediasTableSeeder::class);
     }
